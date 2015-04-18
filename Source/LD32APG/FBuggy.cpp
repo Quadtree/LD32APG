@@ -73,7 +73,7 @@ void AFBuggy::Tick( float DeltaTime )
 		if (comp->ComponentHasTag("BodyComponent")) bodyComponent = comp;
 	}
 
-	if (OldRight != Right)
+	/*if (OldRight != Right)
 	{
 		for (UActorComponent* comp : this->GetComponentsByClass(USceneComponent::StaticClass()))
 		{
@@ -108,14 +108,14 @@ void AFBuggy::Tick( float DeltaTime )
 
 				c->SetRelativeRotation(rot);*/
 
-				c->AddLocalRotation(FRotator(0, 0, (Right - OldRight) * 40));
+				/*c->AddLocalRotation(FRotator(0, 0, (Right - OldRight) * 40));
 
 				//UE_LOG(LogTemp, Display, TEXT("TURN %s -> %s"), *oldRot.ToString(), *rot.ToString());
 			}
 		}
 
 		OldRight = Right;
-	}
+	}*/
 
 	//}
 	/*else
