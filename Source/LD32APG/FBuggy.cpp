@@ -36,6 +36,18 @@ void AFBuggy::Tick( float DeltaTime )
 			}
 		}
 	}
+	else
+	{
+		for (UActorComponent* comp : this->GetComponentsByClass(UPhysicsConstraintComponent::StaticClass()))
+		{
+			UPhysicsConstraintComponent* c = Cast<UPhysicsConstraintComponent>(comp);
+
+			if (c)
+			{
+				c->SetAngularVelocityTarget(FVector(0, Right * 50 * (c->ComponentHasTag("LeftMotor") ? -1 : 1), 0));
+			}
+		}
+	}
 }
 
 // Called to bind functionality to input
