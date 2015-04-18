@@ -33,6 +33,6 @@ public:
 
 	void MoveRight(float right);
 
-	void Motor(UPrimitiveComponent* wheel, float DesiredSpeed, float force);
+	void Motor(UPrimitiveComponent* wheel, float DesiredSpeed, float force, float deltaTime);
 	
 };

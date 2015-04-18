@@ -49,8 +49,6 @@ void AFBuggy::Tick( float DeltaTime )
 		}
 	}*/
 
-	//if (FMath::Abs(Right) < 0.01f)
-	//{
 	for (UActorComponent* comp : this->GetComponentsByClass(UPrimitiveComponent::StaticClass()))
 	{
 		UPrimitiveComponent* c = Cast<UPrimitiveComponent>(comp);
@@ -60,9 +58,35 @@ void AFBuggy::Tick( float DeltaTime )
 			//if ((Forward > 0 && c->GetPhysicsAngularVelocity().Y < Forward * 250) || (Forward < 0 && c->GetPhysicsAngularVelocity().Y > Forward * 250))
 			//	c->AddAngularImpulse(c->GetRightVector() * (Forward * 1200 * DeltaTime), NAME_None, true);
 
-			Motor(c, Forward * 250, 1600);
+			Motor(c, Forward * 1600, 10000, DeltaTime);
 
 			//UE_LOG(LogTemp, Display, TEXT("ROT %s"), *c->GetPhysicsAngularVelocity().ToCompactString());
+		}
+	}
+
+	if (FMath::Abs(Right) > 0.01f)
+	{
+
+
+		for (UActorComponent* comp : this->GetComponentsByClass(UPrimitiveComponent::StaticClass()))
+		{
+			UPrimitiveComponent* c = Cast<UPrimitiveComponent>(comp);
+
+			if (c && (c->ComponentHasTag("LeftWheel") || c->ComponentHasTag("RightWheel")) && c->ComponentHasTag("Front"))
+			{
+				float force = (c->ComponentHasTag("LeftWheel") ? 1 : -1) * Right;
+
+				/*if ((force > 0 && c->GetPhysicsAngularVelocity().Y < force * 250) || (force < 0 && c->GetPhysicsAngularVelocity().Y > force * 250))
+				{
+				//c->AddAngularImpulse(FVector(0, force * 1200 * DeltaTime, 0), NAME_None, true);
+				c->AddAngularImpulse(c->GetRightVector() * (force * 1200 * DeltaTime), NAME_None, true);
+				UE_LOG(LogTemp, Display, TEXT("ROT %s"), *c->GetPhysicsAngularVelocity().ToCompactString());
+				}*/
+
+				Motor(c, force * 1600, 10000, DeltaTime);
+
+
+			}
 		}
 	}
 
@@ -72,6 +96,30 @@ void AFBuggy::Tick( float DeltaTime )
 	{
 		if (comp->ComponentHasTag("BodyComponent")) bodyComponent = comp;
 	}
+
+	/*for (UActorComponent* comp : this->GetComponentsByClass(USceneComponent::StaticClass()))
+	{
+		if (comp->ComponentHasTag("SteeringSystem"))
+		{
+			UPrimitiveComponent* prim = Cast<UPrimitiveComponent>(comp);
+
+			float yawDiff = Cast<UPrimitiveComponent>(comp)->GetRelativeTransform().Rotator().Yaw - Cast<UPrimitiveComponent>(bodyComponent)->GetRelativeTransform().Rotator().Yaw;
+
+			float trgYaw = Right * 40;
+
+			float delta = (trgYaw - yawDiff);
+
+			if (delta > 0) delta /= FMath::Abs(delta);
+
+			//prim->AddAngularImpulse((trgYaw - yawDiff) * 8000000000000000000.f * prim->GetUpVector() * DeltaTime, NAME_None, false);
+
+			//prim->AddLocalRotation(FRotator(0, delta, 0));
+
+			//prim->SetPhysicsAngularVelocity(delta * prim->GetUpVector());
+
+			//UE_LOG(LogTemp, Display, TEXT("%s %s"), *Cast<UPrimitiveComponent>(comp)->GetRelativeTransform().Rotator().ToString(), *FString::SanitizeFloat(Cast<UPrimitiveComponent>(comp)->GetRelativeTransform().Rotator().Yaw - Cast<UPrimitiveComponent>(bodyComponent)->GetRelativeTransform().Rotator().Yaw));
+		}
+	}*/
 
 	/*if (OldRight != Right)
 	{
@@ -117,33 +165,10 @@ void AFBuggy::Tick( float DeltaTime )
 		OldRight = Right;
 	}*/
 
-	//}
-	/*else
-	{
-		for (UActorComponent* comp : this->GetComponentsByClass(UPrimitiveComponent::StaticClass()))
-		{
-			UPrimitiveComponent* c = Cast<UPrimitiveComponent>(comp);
-
-			if (c && (c->ComponentHasTag("LeftWheel") || c->ComponentHasTag("RightWheel")))
-			{
-				float force = (c->ComponentHasTag("LeftWheel") ? 1 : -1) * Right;
-
-				/*if ((force > 0 && c->GetPhysicsAngularVelocity().Y < force * 250) || (force < 0 && c->GetPhysicsAngularVelocity().Y > force * 250))
-				{
-					//c->AddAngularImpulse(FVector(0, force * 1200 * DeltaTime, 0), NAME_None, true);
-					c->AddAngularImpulse(c->GetRightVector() * (force * 1200 * DeltaTime), NAME_None, true);
-					UE_LOG(LogTemp, Display, TEXT("ROT %s"), *c->GetPhysicsAngularVelocity().ToCompactString());
-				}*/
-
-				/*Motor(c, force * 250, 100000);
-
-				
-			}
-		}
-	}*/
+	
 }
 
-void AFBuggy::Motor(UPrimitiveComponent* wheel, float DesiredSpeed, float force)
+void AFBuggy::Motor(UPrimitiveComponent* wheel, float DesiredSpeed, float force, float deltaTime)
 {
 	float currentSpeed = wheel->GetComponentTransform().InverseTransformVector(wheel->GetPhysicsAngularVelocity()).Y;
 
@@ -151,12 +176,12 @@ void AFBuggy::Motor(UPrimitiveComponent* wheel, float DesiredSpeed, float force)
 
 	float delta = desiredSpeed - currentSpeed;
 
-	if (FMath::Abs(delta) > 0)
-		delta /= FMath::Abs(delta);
+	//if (FMath::Abs(delta) > 0)
+	//	delta /= FMath::Abs(delta);
 
 	//UE_LOG(LogTemp, Display, TEXT("%s currentSpeed=%s desiredSpeed=%s delta=%s"), *wheel->GetName(), *FString::SanitizeFloat(currentSpeed), *FString::SanitizeFloat(desiredSpeed), *FString::SanitizeFloat(delta));
 
-	wheel->AddAngularImpulse(delta * force * wheel->GetRightVector(), NAME_None, true);
+	wheel->AddAngularImpulse(delta * force * wheel->GetRightVector() * deltaTime, NAME_None, true);
 }
 
 // Called to bind functionality to input
