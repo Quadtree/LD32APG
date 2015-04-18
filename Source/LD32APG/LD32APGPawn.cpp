@@ -39,19 +39,19 @@ ALD32APGPawn::ALD32APGPawn(const FObjectInitializer& ObjectInitializer)
 	check(Vehicle4W->WheelSetups.Num() == 4);
 
 	Vehicle4W->WheelSetups[0].WheelClass = ULD32APGWheelFront::StaticClass();
-	Vehicle4W->WheelSetups[0].BoneName = FName("FrontLeftWheel");
+	Vehicle4W->WheelSetups[0].BoneName = FName("Bone_005");
 	Vehicle4W->WheelSetups[0].AdditionalOffset = FVector(0.f, -12.f, 0.f);
 
 	Vehicle4W->WheelSetups[1].WheelClass = ULD32APGWheelFront::StaticClass();
-	Vehicle4W->WheelSetups[1].BoneName = FName("FrontRightWheel");
+	Vehicle4W->WheelSetups[1].BoneName = FName("Bone_008");
 	Vehicle4W->WheelSetups[1].AdditionalOffset = FVector(0.f, 12.f, 0.f);
 
 	Vehicle4W->WheelSetups[2].WheelClass = ULD32APGWheelRear::StaticClass();
-	Vehicle4W->WheelSetups[2].BoneName = FName("RearLeftWheel");
+	Vehicle4W->WheelSetups[2].BoneName = FName("Bone_006");
 	Vehicle4W->WheelSetups[2].AdditionalOffset = FVector(0.f, -12.f, 0.f);
 
 	Vehicle4W->WheelSetups[3].WheelClass = ULD32APGWheelRear::StaticClass();
-	Vehicle4W->WheelSetups[3].BoneName = FName("RearRightWheel");
+	Vehicle4W->WheelSetups[3].BoneName = FName("Bone_007");
 	Vehicle4W->WheelSetups[3].AdditionalOffset = FVector(0.f, 12.f, 0.f);
 
 	// Create a spring arm component
