@@ -60,7 +60,7 @@ void AFBuggy::Tick( float DeltaTime )
 				//if ((Forward > 0 && c->GetPhysicsAngularVelocity().Y < Forward * 250) || (Forward < 0 && c->GetPhysicsAngularVelocity().Y > Forward * 250))
 				//	c->AddAngularImpulse(c->GetRightVector() * (Forward * 1200 * DeltaTime), NAME_None, true);
 
-				Motor(c, Forward * 250);
+				Motor(c, Forward * 250, 1600);
 
 				//UE_LOG(LogTemp, Display, TEXT("ROT %s"), *c->GetPhysicsAngularVelocity().ToCompactString());
 			}
@@ -83,7 +83,7 @@ void AFBuggy::Tick( float DeltaTime )
 					UE_LOG(LogTemp, Display, TEXT("ROT %s"), *c->GetPhysicsAngularVelocity().ToCompactString());
 				}*/
 
-				Motor(c, force * 250);
+				Motor(c, force * 250, 100000);
 
 				
 			}
@@ -91,7 +91,7 @@ void AFBuggy::Tick( float DeltaTime )
 	}
 }
 
-void AFBuggy::Motor(UPrimitiveComponent* wheel, float DesiredSpeed)
+void AFBuggy::Motor(UPrimitiveComponent* wheel, float DesiredSpeed, float force)
 {
 	float currentSpeed = wheel->GetComponentTransform().InverseTransformVector(wheel->GetPhysicsAngularVelocity()).Y;
 
@@ -99,9 +99,12 @@ void AFBuggy::Motor(UPrimitiveComponent* wheel, float DesiredSpeed)
 
 	float delta = desiredSpeed - currentSpeed;
 
+	if (FMath::Abs(delta) > 0)
+		delta /= FMath::Abs(delta);
+
 	UE_LOG(LogTemp, Display, TEXT("%s currentSpeed=%s desiredSpeed=%s delta=%s"), *wheel->GetName(), *FString::SanitizeFloat(currentSpeed), *FString::SanitizeFloat(desiredSpeed), *FString::SanitizeFloat(delta));
 
-	wheel->AddAngularImpulse(delta * 6400 * wheel->GetRightVector(), NAME_None, true);
+	wheel->AddAngularImpulse(delta * force * wheel->GetRightVector(), NAME_None, true);
 }
 
 // Called to bind functionality to input
