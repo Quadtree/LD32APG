@@ -27,6 +27,8 @@ public:
 
 	float Right;
 
+	float OldRight;
+
 	void MoveForward(float forward);
 
 	void MoveRight(float right);

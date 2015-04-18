@@ -49,24 +49,76 @@ void AFBuggy::Tick( float DeltaTime )
 		}
 	}*/
 
-	if (FMath::Abs(Right) < 0.01f)
+	//if (FMath::Abs(Right) < 0.01f)
+	//{
+	for (UActorComponent* comp : this->GetComponentsByClass(UPrimitiveComponent::StaticClass()))
 	{
-		for (UActorComponent* comp : this->GetComponentsByClass(UPrimitiveComponent::StaticClass()))
-		{
-			UPrimitiveComponent* c = Cast<UPrimitiveComponent>(comp);
+		UPrimitiveComponent* c = Cast<UPrimitiveComponent>(comp);
 
-			if (c && (c->ComponentHasTag("LeftWheel") || c->ComponentHasTag("RightWheel")))
+		if (c && (c->ComponentHasTag("LeftWheel") || c->ComponentHasTag("RightWheel")))
+		{
+			//if ((Forward > 0 && c->GetPhysicsAngularVelocity().Y < Forward * 250) || (Forward < 0 && c->GetPhysicsAngularVelocity().Y > Forward * 250))
+			//	c->AddAngularImpulse(c->GetRightVector() * (Forward * 1200 * DeltaTime), NAME_None, true);
+
+			Motor(c, Forward * 250, 1600);
+
+			//UE_LOG(LogTemp, Display, TEXT("ROT %s"), *c->GetPhysicsAngularVelocity().ToCompactString());
+		}
+	}
+
+	UActorComponent* bodyComponent = nullptr;
+
+	for (UActorComponent* comp : this->GetComponentsByClass(USceneComponent::StaticClass()))
+	{
+		if (comp->ComponentHasTag("BodyComponent")) bodyComponent = comp;
+	}
+
+	if (OldRight != Right)
+	{
+		for (UActorComponent* comp : this->GetComponentsByClass(USceneComponent::StaticClass()))
+		{
+			USceneComponent* c = Cast<USceneComponent>(comp);
+
+			if (c && (c->ComponentHasTag("Front")))
 			{
 				//if ((Forward > 0 && c->GetPhysicsAngularVelocity().Y < Forward * 250) || (Forward < 0 && c->GetPhysicsAngularVelocity().Y > Forward * 250))
 				//	c->AddAngularImpulse(c->GetRightVector() * (Forward * 1200 * DeltaTime), NAME_None, true);
 
-				Motor(c, Forward * 250, 1600);
+				//FRotator bodyRot = Cast<USceneComponent>(bodyComponent)->GetRelativeTransform().Rotator();
+
+				//FRotator curRot = c->GetRelativeTransform().Rotator();
+
+				//curRot.Quaternion().to
+
+				//UE_LOG(LogTemp, Display, TEXT("ROT %s %s"), *bodyRot.ToString(), *curRot.ToString());
+
+
+
+				//c->SetRelativeRotation(FRotator(0, Right * 40, 0));
+
+				//UE_LOG(LogTemp, Display, TEXT("ARGH) %s %s"), *c->GetRelativeTransform().Rotator().ToCompactString(), *Cast<USceneComponent>(bodyComponent)->GetRelativeTransform().Rotator().ToCompactString());
 
 				//UE_LOG(LogTemp, Display, TEXT("ROT %s"), *c->GetPhysicsAngularVelocity().ToCompactString());
+
+				/*FRotator rot = c->GetRelativeTransform().Rotator();
+
+				FRotator oldRot = rot;
+
+				rot.Yaw += (Right - OldRight) * 400;
+
+				c->SetRelativeRotation(rot);*/
+
+				c->AddLocalRotation(FRotator(0, 0, (Right - OldRight) * 40));
+
+				//UE_LOG(LogTemp, Display, TEXT("TURN %s -> %s"), *oldRot.ToString(), *rot.ToString());
 			}
 		}
+
+		OldRight = Right;
 	}
-	else
+
+	//}
+	/*else
 	{
 		for (UActorComponent* comp : this->GetComponentsByClass(UPrimitiveComponent::StaticClass()))
 		{
@@ -83,12 +135,12 @@ void AFBuggy::Tick( float DeltaTime )
 					UE_LOG(LogTemp, Display, TEXT("ROT %s"), *c->GetPhysicsAngularVelocity().ToCompactString());
 				}*/
 
-				Motor(c, force * 250, 100000);
+				/*Motor(c, force * 250, 100000);
 
 				
 			}
 		}
-	}
+	}*/
 }
 
 void AFBuggy::Motor(UPrimitiveComponent* wheel, float DesiredSpeed, float force)
@@ -102,7 +154,7 @@ void AFBuggy::Motor(UPrimitiveComponent* wheel, float DesiredSpeed, float force)
 	if (FMath::Abs(delta) > 0)
 		delta /= FMath::Abs(delta);
 
-	UE_LOG(LogTemp, Display, TEXT("%s currentSpeed=%s desiredSpeed=%s delta=%s"), *wheel->GetName(), *FString::SanitizeFloat(currentSpeed), *FString::SanitizeFloat(desiredSpeed), *FString::SanitizeFloat(delta));
+	//UE_LOG(LogTemp, Display, TEXT("%s currentSpeed=%s desiredSpeed=%s delta=%s"), *wheel->GetName(), *FString::SanitizeFloat(currentSpeed), *FString::SanitizeFloat(desiredSpeed), *FString::SanitizeFloat(delta));
 
 	wheel->AddAngularImpulse(delta * force * wheel->GetRightVector(), NAME_None, true);
 }
