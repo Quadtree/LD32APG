@@ -93,16 +93,15 @@ void AFBuggy::Tick( float DeltaTime )
 
 void AFBuggy::Motor(UPrimitiveComponent* wheel, float DesiredSpeed)
 {
-	FVector currentSpeed = wheel->GetPhysicsAngularVelocity();
+	float currentSpeed = wheel->GetComponentTransform().InverseTransformVector(wheel->GetPhysicsAngularVelocity()).Y;
 
-	FVector desiredSpeed = wheel->GetRightVector() * DesiredSpeed;
+	float desiredSpeed = DesiredSpeed;
 
-	FVector delta = desiredSpeed - currentSpeed;
-	delta.Normalize();
+	float delta = desiredSpeed - currentSpeed;
 
-	UE_LOG(LogTemp, Display, TEXT("currentSpeed=%s desiredSpeed=%s delta=%s"), *currentSpeed.ToString(), *desiredSpeed.ToString(), *delta.ToString());
+	UE_LOG(LogTemp, Display, TEXT("%s currentSpeed=%s desiredSpeed=%s delta=%s"), *wheel->GetName(), *FString::SanitizeFloat(currentSpeed), *FString::SanitizeFloat(desiredSpeed), *FString::SanitizeFloat(delta));
 
-	wheel->AddAngularImpulse(delta * 1600, NAME_None, true);
+	wheel->AddAngularImpulse(delta * 6400 * wheel->GetRightVector(), NAME_None, true);
 }
 
 // Called to bind functionality to input
