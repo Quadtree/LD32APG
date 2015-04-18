@@ -4,5 +4,6 @@
 #define __LD32APG_H__
 
 #include "CoreUObject.h"
+#include "Engine.h"
 
 #endif

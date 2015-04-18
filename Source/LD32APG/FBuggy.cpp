@@ -24,6 +24,18 @@ void AFBuggy::Tick( float DeltaTime )
 {
 	Super::Tick( DeltaTime );
 
+	if (FMath::Abs(Right) < 0.01f)
+	{
+		for (UActorComponent* comp : this->GetComponentsByClass(UPhysicsConstraintComponent::StaticClass()))
+		{
+			UPhysicsConstraintComponent* c = Cast<UPhysicsConstraintComponent>(comp);
+
+			if (c)
+			{
+				c->SetAngularVelocityTarget(FVector(0, Forward * 50, 0));
+			}
+		}
+	}
 }
 
 // Called to bind functionality to input
@@ -31,5 +43,16 @@ void AFBuggy::SetupPlayerInputComponent(class UInputComponent* InputComponent)
 {
 	Super::SetupPlayerInputComponent(InputComponent);
 
+	InputComponent->BindAxis("MoveForward", this, &AFBuggy::MoveForward);
+	InputComponent->BindAxis("MoveRight", this, &AFBuggy::MoveRight);
 }
 
+void AFBuggy::MoveForward(float forward)
+{
+	Forward = forward;
+}
+
+void AFBuggy::MoveRight(float right)
+{
+	Right = right;
+}
