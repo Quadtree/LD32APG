@@ -58,7 +58,7 @@ void AFBuggy::Tick( float DeltaTime )
 			//if ((Forward > 0 && c->GetPhysicsAngularVelocity().Y < Forward * 250) || (Forward < 0 && c->GetPhysicsAngularVelocity().Y > Forward * 250))
 			//	c->AddAngularImpulse(c->GetRightVector() * (Forward * 1200 * DeltaTime), NAME_None, true);
 
-			Motor(c, Forward * 1600, 10000, DeltaTime);
+			Motor(c, Forward * 700, 1000, DeltaTime);
 
 			//UE_LOG(LogTemp, Display, TEXT("ROT %s"), *c->GetPhysicsAngularVelocity().ToCompactString());
 		}
@@ -83,7 +83,7 @@ void AFBuggy::Tick( float DeltaTime )
 				UE_LOG(LogTemp, Display, TEXT("ROT %s"), *c->GetPhysicsAngularVelocity().ToCompactString());
 				}*/
 
-				Motor(c, force * 1600, 10000, DeltaTime);
+				Motor(c, force * 700, 1000, DeltaTime);
 
 
 			}
