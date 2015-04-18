@@ -24,7 +24,7 @@ void AFBuggy::Tick( float DeltaTime )
 {
 	Super::Tick( DeltaTime );
 
-	if (FMath::Abs(Right) < 0.01f)
+	/*if (FMath::Abs(Right) < 0.01f)
 	{
 		for (UActorComponent* comp : this->GetComponentsByClass(UPhysicsConstraintComponent::StaticClass()))
 		{
@@ -45,6 +45,22 @@ void AFBuggy::Tick( float DeltaTime )
 			if (c)
 			{
 				c->SetAngularVelocityTarget(FVector(0, Right * 50 * (c->ComponentHasTag("LeftMotor") ? -1 : 1), 0));
+			}
+		}
+	}*/
+
+	if (FMath::Abs(Right) < 0.01f)
+	{
+		for (UActorComponent* comp : this->GetComponentsByClass(UPrimitiveComponent::StaticClass()))
+		{
+			UPrimitiveComponent* c = Cast<UPrimitiveComponent>(comp);
+
+			if (c && (c->ComponentHasTag("LeftWheel") || c->ComponentHasTag("RightWheel")))
+			{
+				if (c->GetPhysicsAngularVelocity().Y < Forward * 250)
+					c->AddAngularImpulse(FVector(0, Forward * 40 * DeltaTime, 0), NAME_None, true);
+
+				//UE_LOG(LogTemp, Display, TEXT("ROT %s"), *c->GetPhysicsAngularVelocity().ToCompactString());
 			}
 		}
 	}
