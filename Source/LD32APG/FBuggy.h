@@ -30,5 +30,7 @@ public:
 	void MoveForward(float forward);
 
 	void MoveRight(float right);
+
+	void Motor(UPrimitiveComponent* wheel, float DesiredSpeed);
 	
 };

@@ -57,8 +57,10 @@ void AFBuggy::Tick( float DeltaTime )
 
 			if (c && (c->ComponentHasTag("LeftWheel") || c->ComponentHasTag("RightWheel")))
 			{
-				if ((Forward > 0 && c->GetPhysicsAngularVelocity().Y < Forward * 250) || (Forward < 0 && c->GetPhysicsAngularVelocity().Y > Forward * 250))
-					c->AddAngularImpulse(c->GetRightVector() * (Forward * 1200 * DeltaTime), NAME_None, true);
+				//if ((Forward > 0 && c->GetPhysicsAngularVelocity().Y < Forward * 250) || (Forward < 0 && c->GetPhysicsAngularVelocity().Y > Forward * 250))
+				//	c->AddAngularImpulse(c->GetRightVector() * (Forward * 1200 * DeltaTime), NAME_None, true);
+
+				Motor(c, Forward * 250);
 
 				//UE_LOG(LogTemp, Display, TEXT("ROT %s"), *c->GetPhysicsAngularVelocity().ToCompactString());
 			}
@@ -74,17 +76,33 @@ void AFBuggy::Tick( float DeltaTime )
 			{
 				float force = (c->ComponentHasTag("LeftWheel") ? 1 : -1) * Right;
 
-				if ((force > 0 && c->GetPhysicsAngularVelocity().Y < force * 250) || (force < 0 && c->GetPhysicsAngularVelocity().Y > force * 250))
+				/*if ((force > 0 && c->GetPhysicsAngularVelocity().Y < force * 250) || (force < 0 && c->GetPhysicsAngularVelocity().Y > force * 250))
 				{
 					//c->AddAngularImpulse(FVector(0, force * 1200 * DeltaTime, 0), NAME_None, true);
 					c->AddAngularImpulse(c->GetRightVector() * (force * 1200 * DeltaTime), NAME_None, true);
 					UE_LOG(LogTemp, Display, TEXT("ROT %s"), *c->GetPhysicsAngularVelocity().ToCompactString());
-				}
+				}*/
+
+				Motor(c, force * 250);
 
 				
 			}
 		}
 	}
+}
+
+void AFBuggy::Motor(UPrimitiveComponent* wheel, float DesiredSpeed)
+{
+	FVector currentSpeed = wheel->GetPhysicsAngularVelocity();
+
+	FVector desiredSpeed = wheel->GetRightVector() * DesiredSpeed;
+
+	FVector delta = desiredSpeed - currentSpeed;
+	delta.Normalize();
+
+	UE_LOG(LogTemp, Display, TEXT("currentSpeed=%s desiredSpeed=%s delta=%s"), *currentSpeed.ToString(), *desiredSpeed.ToString(), *delta.ToString());
+
+	wheel->AddAngularImpulse(delta * 1600, NAME_None, true);
 }
 
 // Called to bind functionality to input
