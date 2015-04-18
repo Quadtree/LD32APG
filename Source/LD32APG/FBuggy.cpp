@@ -57,10 +57,31 @@ void AFBuggy::Tick( float DeltaTime )
 
 			if (c && (c->ComponentHasTag("LeftWheel") || c->ComponentHasTag("RightWheel")))
 			{
-				if (c->GetPhysicsAngularVelocity().Y < Forward * 250)
-					c->AddAngularImpulse(FVector(0, Forward * 40 * DeltaTime, 0), NAME_None, true);
+				if ((Forward > 0 && c->GetPhysicsAngularVelocity().Y < Forward * 250) || (Forward < 0 && c->GetPhysicsAngularVelocity().Y > Forward * 250))
+					c->AddAngularImpulse(c->GetRightVector() * (Forward * 1200 * DeltaTime), NAME_None, true);
 
 				//UE_LOG(LogTemp, Display, TEXT("ROT %s"), *c->GetPhysicsAngularVelocity().ToCompactString());
+			}
+		}
+	}
+	else
+	{
+		for (UActorComponent* comp : this->GetComponentsByClass(UPrimitiveComponent::StaticClass()))
+		{
+			UPrimitiveComponent* c = Cast<UPrimitiveComponent>(comp);
+
+			if (c && (c->ComponentHasTag("LeftWheel") || c->ComponentHasTag("RightWheel")))
+			{
+				float force = (c->ComponentHasTag("LeftWheel") ? 1 : -1) * Right;
+
+				if ((force > 0 && c->GetPhysicsAngularVelocity().Y < force * 250) || (force < 0 && c->GetPhysicsAngularVelocity().Y > force * 250))
+				{
+					//c->AddAngularImpulse(FVector(0, force * 1200 * DeltaTime, 0), NAME_None, true);
+					c->AddAngularImpulse(c->GetRightVector() * (force * 1200 * DeltaTime), NAME_None, true);
+					UE_LOG(LogTemp, Display, TEXT("ROT %s"), *c->GetPhysicsAngularVelocity().ToCompactString());
+				}
+
+				
 			}
 		}
 	}
