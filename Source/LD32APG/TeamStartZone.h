@@ -23,4 +23,6 @@ public:
 	UPROPERTY(EditAnywhere, Category = Team)
 	int32 Team;
 	
+	UFUNCTION(BlueprintPure, Category = Win)
+	int32 GetVictoryPoints();
 };

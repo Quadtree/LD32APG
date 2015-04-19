@@ -2,6 +2,7 @@
 
 #include "LD32APG.h"
 #include "TeamStartZone.h"
+#include "VictoryPointComponent.h"
 
 
 // Sets default values
@@ -26,3 +27,33 @@ void ATeamStartZone::Tick( float DeltaTime )
 
 }
 
+int32 ATeamStartZone::GetVictoryPoints()
+{
+	int32 vp = 0;
+
+	TArray<FOverlapResult> res;
+
+	FVector origin, extent;
+
+	GetActorBounds(false, origin, extent);
+
+	UE_LOG(LogTemp, Display, TEXT("O=%s E=%s"), *origin.ToCompactString(), *extent.ToCompactString());
+
+	if (GetWorld()->OverlapMulti(res, GetActorLocation(), GetActorRotation().Quaternion(), FCollisionShape::MakeBox((extent) + FVector::UpVector * 10000), FCollisionQueryParams(), FCollisionObjectQueryParams::AllDynamicObjects))
+	{
+		for (auto a : res)
+		{
+			if (a.Actor.IsValid() && a.Actor->FindComponentByClass<UVictoryPointComponent>()) vp++;
+		}
+	}
+
+	return vp;
+
+	/*for (TActorIterator<AActor> itr(GetWorld()); itr; ++itr)
+	{
+		if (itr->FindComponentByClass<UVictoryPointComponent>())
+		{
+			itr->FindComponentByClass<UVictoryPointComponent>()
+		}
+	}*/
+}
