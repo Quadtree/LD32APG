@@ -43,6 +43,19 @@ public:
 	static const FName LookUpBinding;
 	static const FName LookRightBinding;
 
+	UPROPERTY(BlueprintReadWrite, Category = WeaponConfiguration)
+	class UWeaponConfiguration* WeaponConfiguration;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Energy)
+	float CurrentEnergy;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Energy)
+	float MaxEnergy;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Energy)
+	float EnergyRegeneratedPerSecond;
+
+
 private:
 	/* Are we on a 'slippery' surface */
 	bool bIsLowFriction;

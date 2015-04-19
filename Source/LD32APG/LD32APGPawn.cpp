@@ -4,7 +4,6 @@
 #include "LD32APGPawn.h"
 #include "LD32APGWheelFront.h"
 #include "LD32APGWheelRear.h"
-#include "LD32APGHud.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
@@ -90,6 +89,8 @@ void ALD32APGPawn::MoveRight(float Val)
 void ALD32APGPawn::Tick(float Delta)
 {
 	Super::Tick(Delta);
+
+	CurrentEnergy = FMath::Clamp(CurrentEnergy + EnergyRegeneratedPerSecond * Delta, 0.f, MaxEnergy);
 }
 
 void ALD32APGPawn::BeginPlay()
