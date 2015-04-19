@@ -15,7 +15,7 @@ void ABuggyAIController::Tick(float deltaTime)
 
 	if (pawn)
 	{
-		if (StuckTime > 8)
+		if (StuckTime > 8 || pawn->GetActorUpVector().Z < 0)
 		{
 			pawn->SetJetPower(0);
 			pawn->MoveRight(0);

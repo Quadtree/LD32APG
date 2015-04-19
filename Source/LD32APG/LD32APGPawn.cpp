@@ -56,13 +56,14 @@ ALD32APGPawn::ALD32APGPawn(const FObjectInitializer& ObjectInitializer)
 	// Create a spring arm component
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm0"));
 	SpringArm->TargetOffset = FVector(0.f, 0.f, 200.f);
-	SpringArm->SetRelativeRotation(FRotator(-15.f, 0.f, 0.f));
+	//SpringArm->SetRelativeRotation(FRotator(-15.f, 0.f, 0.f));
 	SpringArm->AttachTo(RootComponent);
 	SpringArm->TargetArmLength = 600.0f;
-	SpringArm->bEnableCameraRotationLag = true;
-	SpringArm->CameraRotationLagSpeed = 7.f;
-	SpringArm->bInheritPitch = false;
-	SpringArm->bInheritRoll = false;
+	//SpringArm->bEnableCameraRotationLag = true;
+	//SpringArm->CameraRotationLagSpeed = 7.f;
+	//SpringArm->bInheritPitch = false;
+	//SpringArm->bInheritRoll = false;
+	SpringArm->bUsePawnControlRotation = true;
 
 	// Create camera component 
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera0"));
@@ -80,8 +81,6 @@ void ALD32APGPawn::SetupPlayerInputComponent(class UInputComponent* InputCompone
 
 	InputComponent->BindAxis("MoveForward", this, &ALD32APGPawn::MoveForward);
 	InputComponent->BindAxis("MoveRight", this, &ALD32APGPawn::MoveRight);
-	InputComponent->BindAxis("LookUp");
-	InputComponent->BindAxis("LookRight");
 
 	InputComponent->BindAxis("JetPower", this, &ALD32APGPawn::SetJetPower);
 
@@ -93,6 +92,9 @@ void ALD32APGPawn::SetupPlayerInputComponent(class UInputComponent* InputCompone
 	InputComponent->BindAction("RevertToStartArea", IE_Pressed, this, &ALD32APGPawn::RevertToStartArea);
 
 	InputComponent->BindAction("AttemptToGrabGold", IE_Pressed, this, &ALD32APGPawn::AttemptToGrabGold);
+
+	InputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
+	InputComponent->BindAxis("LookRight", this, &APawn::AddControllerYawInput);
 }
 
 void ALD32APGPawn::MoveForward(float Val)
