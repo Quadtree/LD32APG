@@ -11,9 +11,17 @@
 UCLASS()
 class LD32APG_API UAPGGameInstance : public UGameInstance
 {
-	GENERATED_BODY()
+	GENERATED_UCLASS_BODY()
+public:
+	UFUNCTION(BlueprintPure, Category = WeaponConfigurations)
+	TArray<class UWeaponConfiguration*> GetAllWeaponConfigurations();
 	
-	
-	
-	
+	UFUNCTION(BlueprintCallable, Category = WeaponConfigurations)
+	void DeleteWeaponConfiguration(FString name);
+
+	UFUNCTION(BlueprintCallable, Category = WeaponConfigurations)
+	void SaveWeaponConfiguration(class UWeaponConfiguration* configuration);
+
+	UPROPERTY(BlueprintReadWrite, Category = WeaponConfigurations)
+	class UWeaponConfiguration* CurrentWeaponConfiguration;
 };

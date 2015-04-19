@@ -34,4 +34,5 @@ public:
 	UPROPERTY(EditAnywhere, Category = PrjComponent)
 	EPrjComponentCategory Category;
 	
+	float CostModifier;
 };

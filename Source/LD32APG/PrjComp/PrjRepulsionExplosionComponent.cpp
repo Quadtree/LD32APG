@@ -3,6 +3,10 @@
 #include "LD32APG.h"
 #include "PrjRepulsionExplosionComponent.h"
 
-
+UPrjRepulsionExplosionComponent::UPrjRepulsionExplosionComponent()
+{
+	CostModifier = 2;
+	Category = EPrjComponentCategory::PCC_Warhead;
+}
 
 

@@ -3,20 +3,30 @@
 #pragma once
 
 #include "Object.h"
+#include "PrjComp/BasePrjComponent.h"
 #include "WeaponConfiguration.generated.h"
 
 /**
  * 
  */
-UCLASS()
+UCLASS(BlueprintType)
 class LD32APG_API UWeaponConfiguration : public UObject
 {
 	GENERATED_BODY()
 	
 public:
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = WeaponConfiguration)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = WeaponConfiguration)
+	FString ConfigurationName;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = WeaponConfiguration)
 	TArray<int32> EnabledFireGroups;
 	
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = WeaponConfiguration)
-	TSubclassOf<class UBasePrjComponent> ProjectileComponents;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = WeaponConfiguration)
+	TArray<TSubclassOf<class UBasePrjComponent>> ProjectileComponents;
+
+	UFUNCTION(BlueprintPure, Category = WeaponConfiguration)
+	float GetCostModifierOf(EPrjComponentCategory category);
+
+	UFUNCTION(BlueprintPure, Category = WeaponConfiguration)
+	float GetTotalEnergyCost();
 };

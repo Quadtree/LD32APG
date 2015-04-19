@@ -12,8 +12,8 @@ UCLASS()
 class LD32APG_API UPrjRepulsionExplosionComponent : public UPrjExplosionComponent
 {
 	GENERATED_BODY()
-	
-	
+
+	UPrjRepulsionExplosionComponent();
 	
 	
 };
