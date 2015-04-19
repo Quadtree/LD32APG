@@ -73,6 +73,11 @@ public:
 	float CurrentThrottle;
 
 	float JetPower;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Team)
+	int32 Team;
+
+	void RevertToStartArea();
 private:
 	/* Are we on a 'slippery' surface */
 	bool bIsLowFriction;

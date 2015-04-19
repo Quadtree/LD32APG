@@ -37,7 +37,7 @@ int32 ATeamStartZone::GetVictoryPoints()
 
 	GetActorBounds(false, origin, extent);
 
-	UE_LOG(LogTemp, Display, TEXT("O=%s E=%s"), *origin.ToCompactString(), *extent.ToCompactString());
+	//UE_LOG(LogTemp, Display, TEXT("O=%s E=%s"), *origin.ToCompactString(), *extent.ToCompactString());
 
 	if (GetWorld()->OverlapMulti(res, GetActorLocation(), GetActorRotation().Quaternion(), FCollisionShape::MakeBox((extent) + FVector::UpVector * 10000), FCollisionQueryParams(), FCollisionObjectQueryParams::AllDynamicObjects))
 	{

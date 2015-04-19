@@ -14,6 +14,7 @@
 #include "WeaponConfiguration.h"
 #include "BuggyGunComponent.h"
 #include "BuggyProjectile.h"
+#include "TeamStartZone.h"
 
 #define JET_POWER 1500
 
@@ -85,6 +86,8 @@ void ALD32APGPawn::SetupPlayerInputComponent(class UInputComponent* InputCompone
 	InputComponent->BindAction("Fire", IE_Released, this, &ALD32APGPawn::StopFiring);
 
 	InputComponent->BindAction("DetonateCommandFuzes", IE_Pressed, this, &ALD32APGPawn::DetonateCommandFuzes);
+
+	InputComponent->BindAction("RevertToStartArea", IE_Pressed, this, &ALD32APGPawn::RevertToStartArea);
 }
 
 void ALD32APGPawn::MoveForward(float Val)
@@ -160,6 +163,10 @@ void ALD32APGPawn::Tick(float Delta)
 			CurrentEnergy -= jetEnergy;
 		}
 	}
+
+	if (GetActorLocation().Z < -1000){
+		CurrentEnergy = MaxEnergy; RevertToStartArea();
+	}
 }
 
 void ALD32APGPawn::BeginPlay()
@@ -175,6 +182,33 @@ void ALD32APGPawn::BeginPlay()
 			if (gc)
 			{
 				gc->SetVisibility(WeaponConfiguration->EnabledFireGroups.Contains(gc->FireGroup));
+			}
+		}
+	}
+}
+
+void ALD32APGPawn::RevertToStartArea()
+{
+	if (CurrentEnergy >= MaxEnergy * 0.9f)
+	{
+		for (TActorIterator<ATeamStartZone> itr(GetWorld()); itr; ++itr)
+		{
+			if (itr->Team == Team)
+			{
+				FVector origin, extents;
+
+				itr->GetActorBounds(false, origin, extents);
+
+				origin.Z = 1000;
+				extents.Z = 0;
+
+				SetActorLocation(FMath::RandPointInBox(FBox(origin - extents, origin + extents)));
+
+				SetActorRotation(FRotator(0, Team == 0 ? 180 : 0, 0));
+
+				GetMesh()->SetPhysicsLinearVelocity(FVector(0, 0, 0));
+				GetMesh()->SetPhysicsAngularVelocity(FVector(0, 0, 0));
+				CurrentEnergy = 0;
 			}
 		}
 	}
