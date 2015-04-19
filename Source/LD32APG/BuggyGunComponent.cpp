@@ -11,6 +11,7 @@
 #include "PrjComp/PrjRepulsionConstantComponent.h"
 #include "PrjComp/PrjAttractionExplosionComponent.h"
 #include "PrjComp/PrjRepulsionExplosionComponent.h"
+#include "PrjKineticWarheadComponent.h"
 
 void UBuggyGunComponent::Fire(class UWeaponConfiguration* weaponConfig)
 {
@@ -37,6 +38,13 @@ void UBuggyGunComponent::Fire(class UWeaponConfiguration* weaponConfig)
 	if (weaponConfig->ProjectileComponents.Contains(UPrjRepulsionConstantComponent::StaticClass())) prj->Mesh->SetMaterial(0, RepulsionConstantMaterial);
 	if (weaponConfig->ProjectileComponents.Contains(UPrjAttractionExplosionComponent::StaticClass())) prj->Mesh->SetMaterial(0, AttractionExplosionMaterial);
 	if (weaponConfig->ProjectileComponents.Contains(UPrjRepulsionExplosionComponent::StaticClass())) prj->Mesh->SetMaterial(0, RepulsionExplosionMaterial);
+
+	if (weaponConfig->ProjectileComponents.Contains(UPrjKineticWarheadComponent::StaticClass()))
+	{
+		prj->Mesh->GetBodyInstance()->bOverrideMass = true;
+		prj->Mesh->GetBodyInstance()->MassInKg = 300;
+		prj->Mesh->GetBodyInstance()->UpdateMassProperties();
+	}
 
 	for (auto a : weaponConfig->ProjectileComponents)
 	{

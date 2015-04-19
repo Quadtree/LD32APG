@@ -12,6 +12,7 @@
 #include "PrjComp/PrjFuzeTimedComponent.h"
 #include "PrjComp/PrjHeatSeekerPatternComponent.h"
 #include "PrjComp/PrjWeavingPatternComponent.h"
+#include "PrjKineticWarheadComponent.h"
 
 float UWeaponConfiguration::GetCostModifierOf(EPrjComponentCategory category)
 {
@@ -54,7 +55,7 @@ void UWeaponConfiguration::SetToRandom()
 
 	bool hasWarhead = false;
 
-	switch (FMath::RandRange(0, 3))
+	switch (FMath::RandRange(0, 4))
 	{
 	case 0:
 		ProjectileComponents.Add(TSubclassOf<UBasePrjComponent>(UPrjRepulsionExplosionComponent::StaticClass()));
@@ -69,6 +70,9 @@ void UWeaponConfiguration::SetToRandom()
 		break;
 	case 3:
 		ProjectileComponents.Add(TSubclassOf<UBasePrjComponent>(UPrjAttractionConstantComponent::StaticClass()));
+		break;
+	case 4:
+		ProjectileComponents.Add(TSubclassOf<UBasePrjComponent>(UPrjKineticWarheadComponent::StaticClass()));
 		break;
 	}
 
