@@ -64,11 +64,15 @@ public:
 	UFUNCTION()
 	void DetonateCommandFuzes();
 
+	void SetJetPower(float jetPower);
+
 	bool IsFiring;
 
 	float FireCooldown;
 
 	float CurrentThrottle;
+
+	float JetPower;
 private:
 	/* Are we on a 'slippery' surface */
 	bool bIsLowFriction;

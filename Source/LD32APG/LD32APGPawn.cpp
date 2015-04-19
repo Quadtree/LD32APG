@@ -15,6 +15,8 @@
 #include "BuggyGunComponent.h"
 #include "BuggyProjectile.h"
 
+#define JET_POWER 1500
+
 #ifdef HMD_INTGERATION
 // Needed for VR Headset
 #include "IHeadMountedDisplay.h"
@@ -76,6 +78,8 @@ void ALD32APGPawn::SetupPlayerInputComponent(class UInputComponent* InputCompone
 	InputComponent->BindAxis("MoveRight", this, &ALD32APGPawn::MoveRight);
 	InputComponent->BindAxis("LookUp");
 	InputComponent->BindAxis("LookRight");
+
+	InputComponent->BindAxis("JetPower", this, &ALD32APGPawn::SetJetPower);
 
 	InputComponent->BindAction("Fire", IE_Pressed, this, &ALD32APGPawn::StartFiring);
 	InputComponent->BindAction("Fire", IE_Released, this, &ALD32APGPawn::StopFiring);
@@ -145,6 +149,17 @@ void ALD32APGPawn::Tick(float Delta)
 			UE_LOG(LogTemp, Warning, TEXT("%s has no weapon configuration"), *this->GetName());
 		}
 	}
+
+	if (JetPower)
+	{
+		float jetEnergy = FMath::Abs(JetPower) * 24.0f * Delta;
+
+		if (jetEnergy <= CurrentEnergy)
+		{
+			GetMesh()->AddImpulse(FVector::UpVector * JET_POWER * JetPower * Delta, NAME_None, true);
+			CurrentEnergy -= jetEnergy;
+		}
+	}
 }
 
 void ALD32APGPawn::BeginPlay()
@@ -194,7 +209,10 @@ void ALD32APGPawn::DetonateCommandFuzes()
 	}
 }
 
-
+void ALD32APGPawn::SetJetPower(float jetPower)
+{
+	JetPower = jetPower;
+}
 
 
 #undef LOCTEXT_NAMESPACE
