@@ -14,10 +14,13 @@ TArray<class UWeaponConfiguration*> UAPGGameInstance::GetAllWeaponConfigurations
 {
 	UWeaponConfigurationSaveGame* sg = Cast<UWeaponConfigurationSaveGame>(UGameplayStatics::LoadGameFromSlot(TEXT("WeaponConfigurations"), 0));
 
+	TArray<UWeaponConfiguration*> arr;
+
 	if (sg)
 	{
-		UE_LOG(LogTemp, Display, TEXT("Opened weapon configuration file, %s configurations loaded"), *FString::FromInt(sg->WeaponConfigurations.Num()));
-		return sg->WeaponConfigurations;
+		UE_LOG(LogTemp, Display, TEXT("Opened weapon configuration file"));
+
+		arr.Add(sg->GetLastWeaponConfiguration());
 	}
 	else
 	{
@@ -25,13 +28,17 @@ TArray<class UWeaponConfiguration*> UAPGGameInstance::GetAllWeaponConfigurations
 		sg = NewObject<UWeaponConfigurationSaveGame>();
 		UGameplayStatics::SaveGameToSlot(sg, TEXT("WeaponConfigurations"), 0);
 
-		return sg->WeaponConfigurations;
+		arr.Add(sg->GetLastWeaponConfiguration());
 	}
+
+	return arr;
 }
 
 void UAPGGameInstance::DeleteWeaponConfiguration(FString name)
 {
-	UWeaponConfigurationSaveGame* sg = Cast<UWeaponConfigurationSaveGame>(UGameplayStatics::LoadGameFromSlot(TEXT("WeaponConfigurations"), 0));
+	UGameplayStatics::SaveGameToSlot(NewObject<UWeaponConfigurationSaveGame>(), TEXT("WeaponConfigurations"), 0);
+
+	/*UWeaponConfigurationSaveGame* sg = Cast<UWeaponConfigurationSaveGame>(UGameplayStatics::LoadGameFromSlot(TEXT("WeaponConfigurations"), 0));
 
 	if (sg)
 	{
@@ -65,18 +72,19 @@ void UAPGGameInstance::DeleteWeaponConfiguration(FString name)
 	if (CurrentWeaponConfiguration && CurrentWeaponConfiguration->ConfigurationName == name)
 	{
 		CurrentWeaponConfiguration = NewObject<UWeaponConfiguration>();
-	}
+	}*/
 }
 
 void UAPGGameInstance::SaveWeaponConfiguration(class UWeaponConfiguration* configuration)
 {
 	// first delete it if it already exists
-	DeleteWeaponConfiguration(configuration->ConfigurationName);
+	//DeleteWeaponConfiguration(configuration->ConfigurationName);
 
 	UWeaponConfigurationSaveGame* sg = NewObject<UWeaponConfigurationSaveGame>();
 
-	sg->WeaponConfigurations = GetAllWeaponConfigurations();
-	sg->WeaponConfigurations.Add(configuration);
+	//sg->WeaponConfigurations = GetAllWeaponConfigurations();
+	//sg->WeaponConfigurations.Add(configuration);
+	sg->SetLastWeaponConfiguration(configuration);
 
 	UGameplayStatics::SaveGameToSlot(sg, TEXT("WeaponConfigurations"), 0);
 

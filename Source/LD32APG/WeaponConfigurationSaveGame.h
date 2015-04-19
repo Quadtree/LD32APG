@@ -14,8 +14,18 @@ class LD32APG_API UWeaponConfigurationSaveGame : public USaveGame
 	GENERATED_BODY()
 
 public:
+	class UWeaponConfiguration* GetLastWeaponConfiguration();
+
+	void SetLastWeaponConfiguration(class UWeaponConfiguration* weaponConfiguration);
+
+private:
 	UPROPERTY()
-	TArray<class UWeaponConfiguration*> WeaponConfigurations;
-	
+	FString ConfigurationName;
+
+	UPROPERTY()
+	TArray<int32> EnabledFireGroups;
+
+	UPROPERTY()
+	TArray<TSubclassOf<class UBasePrjComponent>> ProjectileComponents;
 	
 };
