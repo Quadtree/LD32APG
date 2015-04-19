@@ -11,6 +11,7 @@
 #include "Vehicles/WheeledVehicleMovementComponent4W.h"
 #include "Engine/SkeletalMesh.h"
 #include "Engine.h"
+#include "WeaponConfiguration.h"
 
 #ifdef HMD_INTGERATION
 // Needed for VR Headset
@@ -73,11 +74,15 @@ void ALD32APGPawn::SetupPlayerInputComponent(class UInputComponent* InputCompone
 	InputComponent->BindAxis("MoveRight", this, &ALD32APGPawn::MoveRight);
 	InputComponent->BindAxis("LookUp");
 	InputComponent->BindAxis("LookRight");
+
+	InputComponent->BindAction("Fire", IE_Pressed, this, &ALD32APGPawn::StartFiring);
+	InputComponent->BindAction("Fire", IE_Released, this, &ALD32APGPawn::StopFiring);
 }
 
 void ALD32APGPawn::MoveForward(float Val)
 {
 	GetVehicleMovementComponent()->SetThrottleInput(Val);
+	CurrentThrottle = Val;
 }
 
 void ALD32APGPawn::MoveRight(float Val)
@@ -91,11 +96,56 @@ void ALD32APGPawn::Tick(float Delta)
 	Super::Tick(Delta);
 
 	CurrentEnergy = FMath::Clamp(CurrentEnergy + EnergyRegeneratedPerSecond * Delta, 0.f, MaxEnergy);
+
+	float movementEnergy = FMath::Abs(CurrentThrottle) * 3.0f * Delta;
+
+	if (movementEnergy > CurrentEnergy)
+	{
+		GetVehicleMovementComponent()->SetThrottleInput(0);
+	}
+	else
+	{
+		GetVehicleMovementComponent()->SetThrottleInput(CurrentThrottle);
+		CurrentEnergy -= movementEnergy;
+	}
+
+	FireCooldown -= Delta;
+
+	if (IsFiring && FireCooldown <= 0)
+	{
+		if (WeaponConfiguration)
+		{
+			float energyUsage = WeaponConfiguration->GetTotalEnergyCost();
+
+			if (CurrentEnergy >= energyUsage)
+			{
+				CurrentEnergy -= energyUsage;
+
+				UE_LOG(LogTemp, Display, TEXT("FIRE! %s"), *FString::SanitizeFloat(energyUsage));
+
+				FireCooldown = 0.35f;
+			}
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("%s has no weapon configuration"), *this->GetName());
+		}
+	}
 }
 
 void ALD32APGPawn::BeginPlay()
 {
 	Super::BeginPlay();
+}
+
+void ALD32APGPawn::StartFiring()
+{
+	IsFiring = true;
+}
+
+void ALD32APGPawn::StopFiring()
+{
+	IsFiring = true;
 }
 
 

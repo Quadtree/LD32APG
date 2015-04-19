@@ -55,7 +55,17 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Energy)
 	float EnergyRegeneratedPerSecond;
 
+	UFUNCTION()
+	void StartFiring();
 
+	UFUNCTION()
+	void StopFiring();
+
+	bool IsFiring;
+
+	float FireCooldown;
+
+	float CurrentThrottle;
 private:
 	/* Are we on a 'slippery' surface */
 	bool bIsLowFriction;
