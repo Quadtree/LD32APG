@@ -21,6 +21,21 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = Gun)
 	UPhysicalMaterial* BouncyPhysicsMaterial;
+
+	UPROPERTY(EditAnywhere, Category = Gun)
+	class UMaterial* DefaultMaterial;
+
+	UPROPERTY(EditAnywhere, Category = Gun)
+	class UMaterial* RepulsionExplosionMaterial;
+
+	UPROPERTY(EditAnywhere, Category = Gun)
+	class UMaterial* AttractionExplosionMaterial;
+
+	UPROPERTY(EditAnywhere, Category = Gun)
+	class UMaterial* RepulsionConstantMaterial;
+
+	UPROPERTY(EditAnywhere, Category = Gun)
+	class UMaterial* AttractionConstantMaterial;
 	
 	void Fire(class UWeaponConfiguration* weaponConfig);
 };

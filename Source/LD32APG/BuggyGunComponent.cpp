@@ -7,6 +7,10 @@
 #include "PrjComp/PrjArcsPatternComponent.h"
 #include "PrjComp/PrjBouncePatternComponent.h"
 #include "PrjComp/BasePrjComponent.h"
+#include "PrjComp/PrjAttractionConstantComponent.h"
+#include "PrjComp/PrjRepulsionConstantComponent.h"
+#include "PrjComp/PrjAttractionExplosionComponent.h"
+#include "PrjComp/PrjRepulsionExplosionComponent.h"
 
 void UBuggyGunComponent::Fire(class UWeaponConfiguration* weaponConfig)
 {
@@ -26,6 +30,13 @@ void UBuggyGunComponent::Fire(class UWeaponConfiguration* weaponConfig)
 
 	if (weaponConfig->ProjectileComponents.Contains(UPrjBouncePatternComponent::StaticClass()))
 		prj->Mesh->SetPhysMaterialOverride(BouncyPhysicsMaterial);
+
+	prj->Mesh->SetMaterial(0, DefaultMaterial);
+
+	if (weaponConfig->ProjectileComponents.Contains(UPrjAttractionConstantComponent::StaticClass())) prj->Mesh->SetMaterial(0, AttractionConstantMaterial);
+	if (weaponConfig->ProjectileComponents.Contains(UPrjRepulsionConstantComponent::StaticClass())) prj->Mesh->SetMaterial(0, RepulsionConstantMaterial);
+	if (weaponConfig->ProjectileComponents.Contains(UPrjAttractionExplosionComponent::StaticClass())) prj->Mesh->SetMaterial(0, AttractionExplosionMaterial);
+	if (weaponConfig->ProjectileComponents.Contains(UPrjRepulsionExplosionComponent::StaticClass())) prj->Mesh->SetMaterial(0, RepulsionExplosionMaterial);
 
 	for (auto a : weaponConfig->ProjectileComponents)
 	{
