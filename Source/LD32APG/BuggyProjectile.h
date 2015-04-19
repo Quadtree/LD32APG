@@ -26,4 +26,7 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = Pawn)
 	UParticleSystem* AttractionExplosionParticleSystem;
+
+	UPROPERTY(EditAnywhere, Category = Pawn)
+	USoundBase* ExplosionSound;
 };

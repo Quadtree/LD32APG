@@ -26,6 +26,15 @@ class ALD32APGPawn : public AWheeledVehicle
 	UPROPERTY(EditAnywhere, Category = Pawn)
 	UParticleSystem* TeleportParticleSystem;
 
+	UPROPERTY(EditAnywhere, Category = Pawn)
+	USoundBase* TeleportSound;
+
+	UPROPERTY(EditAnywhere, Category = Pawn)
+	USoundBase* FireSound;
+
+	UPROPERTY(EditAnywhere, Category = Pawn)
+	USoundBase* GrabSound;
+
 public:
 	ALD32APGPawn(const FObjectInitializer& ObjectInitializer);
 

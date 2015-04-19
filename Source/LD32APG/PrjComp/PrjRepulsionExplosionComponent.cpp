@@ -16,5 +16,7 @@ void UPrjRepulsionExplosionComponent::Detonate()
 {
 	UGameplayStatics::SpawnEmitterAtLocation(GetOwner(), Cast<ABuggyProjectile>(GetOwner())->RepulsionExplosionParticleSystem, GetOwner()->GetActorLocation());
 
+	UGameplayStatics::PlaySoundAtLocation(GetOwner(), Cast<ABuggyProjectile>(GetOwner())->ExplosionSound, GetOwner()->GetActorLocation());
+
 	Super::Detonate();
 }

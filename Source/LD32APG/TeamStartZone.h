@@ -33,4 +33,7 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = Pawn)
 	UParticleSystem* ScoreParticleSystem;
+
+	UPROPERTY(EditAnywhere, Category = Pawn)
+	USoundBase* ScoreSound;
 };

@@ -145,6 +145,7 @@ void ALD32APGPawn::Tick(float Delta)
 
 					if (gc && WeaponConfiguration->EnabledFireGroups.Contains(gc->FireGroup))
 					{
+						UGameplayStatics::PlaySoundAtLocation(this, FireSound, GetActorLocation());
 						gc->Fire(WeaponConfiguration);
 					}
 				}
@@ -227,6 +228,7 @@ void ALD32APGPawn::RevertToStartArea()
 			if (itr->Team == Team)
 			{
 				UGameplayStatics::SpawnEmitterAtLocation(this, TeleportParticleSystem, GetActorLocation());
+				UGameplayStatics::PlaySoundAtLocation(this, TeleportSound, GetActorLocation());
 
 				FVector origin, extents;
 
@@ -245,6 +247,7 @@ void ALD32APGPawn::RevertToStartArea()
 				CurrentlyTowedGold = nullptr;
 
 				UGameplayStatics::SpawnEmitterAtLocation(this, TeleportParticleSystem, GetActorLocation());
+				UGameplayStatics::PlaySoundAtLocation(this, TeleportSound, GetActorLocation());
 			}
 		}
 	}
@@ -328,6 +331,8 @@ AActor* ALD32APGPawn::GetCurrentGrabTarget()
 void ALD32APGPawn::AttemptToGrabGold()
 {
 	CurrentlyTowedGold = GetCurrentGrabTarget();
+
+	if (CurrentlyTowedGold) UGameplayStatics::PlaySoundAtLocation(this, GrabSound, GetActorLocation());
 }
 
 

@@ -28,6 +28,7 @@ void ATeamStartZone::Tick( float DeltaTime )
 	for (auto a : GetGoldOnTarget())
 	{
 		UGameplayStatics::SpawnEmitterAtLocation(this, ScoreParticleSystem, a->GetActorLocation());
+		UGameplayStatics::PlaySoundAtLocation(this, ScoreSound, a->GetActorLocation());
 		a->Destroy();
 		++VictoryPoints;
 	}
