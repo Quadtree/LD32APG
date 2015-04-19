@@ -12,8 +12,8 @@ UCLASS()
 class LD32APG_API UPrjArcsPatternComponent : public UBasePrjComponent
 {
 	GENERATED_BODY()
-	
-	
+
+	UPrjArcsPatternComponent();
 	
 	
 };

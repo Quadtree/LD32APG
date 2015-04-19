@@ -13,7 +13,9 @@ class LD32APG_API UPrjRepulsionConstantComponent : public UPrjConstantComponent
 {
 	GENERATED_BODY()
 	
-	
+	UPrjRepulsionConstantComponent();
+
+	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 	
 	
 };

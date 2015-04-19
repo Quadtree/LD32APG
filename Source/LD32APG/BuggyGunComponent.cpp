@@ -5,6 +5,7 @@
 #include "BuggyProjectile.h"
 #include "WeaponConfiguration.h"
 #include "PrjComp/PrjArcsPatternComponent.h"
+#include "PrjComp/BasePrjComponent.h"
 
 void UBuggyGunComponent::Fire(class UWeaponConfiguration* weaponConfig)
 {
@@ -16,6 +17,15 @@ void UBuggyGunComponent::Fire(class UWeaponConfiguration* weaponConfig)
 	prj->Mesh->SetPhysicsLinearVelocity(GetComponentRotation().RotateVector(FVector::ForwardVector) * 12000);
 
 	prj->Mesh->SetEnableGravity(weaponConfig->ProjectileComponents.Contains(UPrjArcsPatternComponent::StaticClass()));
+
+	UE_LOG(LogTemp, Display, TEXT("Adding %s"), *FString::FromInt(weaponConfig->ProjectileComponents.Num()));
+
+	for (auto a : weaponConfig->ProjectileComponents)
+	{
+		UE_LOG(LogTemp, Display, TEXT("Adding %s"), *a->GetName());
+		UBasePrjComponent* comp = NewObject<UBasePrjComponent>(prj, a);
+		comp->RegisterComponent();
+	}
 }
 
 

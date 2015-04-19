@@ -12,8 +12,10 @@ UCLASS()
 class LD32APG_API UPrjAttractionConstantComponent : public UPrjConstantComponent
 {
 	GENERATED_BODY()
+
+	UPrjAttractionConstantComponent();
 	
-	
+	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 	
 	
 };
