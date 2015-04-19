@@ -226,6 +226,8 @@ void ALD32APGPawn::RevertToStartArea()
 		{
 			if (itr->Team == Team)
 			{
+				UGameplayStatics::SpawnEmitterAtLocation(this, TeleportParticleSystem, GetActorLocation());
+
 				FVector origin, extents;
 
 				itr->GetActorBounds(false, origin, extents);
@@ -241,6 +243,8 @@ void ALD32APGPawn::RevertToStartArea()
 				GetMesh()->SetPhysicsAngularVelocity(FVector(0, 0, 0));
 				CurrentEnergy = 0;
 				CurrentlyTowedGold = nullptr;
+
+				UGameplayStatics::SpawnEmitterAtLocation(this, TeleportParticleSystem, GetActorLocation());
 			}
 		}
 	}

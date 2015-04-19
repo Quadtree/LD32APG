@@ -23,6 +23,9 @@ class ALD32APGPawn : public AWheeledVehicle
 	UPROPERTY(VisibleAnywhere, Category = Pawn)
 	UParticleSystemComponent* GrabBeamParticleSystem;
 
+	UPROPERTY(EditAnywhere, Category = Pawn)
+	UParticleSystem* TeleportParticleSystem;
+
 public:
 	ALD32APGPawn(const FObjectInitializer& ObjectInitializer);
 

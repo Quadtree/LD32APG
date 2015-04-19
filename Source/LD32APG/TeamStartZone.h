@@ -30,4 +30,7 @@ public:
 	TArray<AActor*> GetGoldOnTarget();
 
 	int32 VictoryPoints;
+
+	UPROPERTY(EditAnywhere, Category = Pawn)
+	UParticleSystem* ScoreParticleSystem;
 };
