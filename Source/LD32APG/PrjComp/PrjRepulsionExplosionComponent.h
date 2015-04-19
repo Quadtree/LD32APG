@@ -15,5 +15,5 @@ class LD32APG_API UPrjRepulsionExplosionComponent : public UPrjExplosionComponen
 
 	UPrjRepulsionExplosionComponent();
 	
-	
+	virtual void Detonate() override;
 };

@@ -2,6 +2,7 @@
 
 #include "LD32APG.h"
 #include "PrjAttractionExplosionComponent.h"
+#include "BuggyProjectile.h"
 
 UPrjAttractionExplosionComponent::UPrjAttractionExplosionComponent()
 {
@@ -11,4 +12,9 @@ UPrjAttractionExplosionComponent::UPrjAttractionExplosionComponent()
 	Strength = -3000;
 }
 
+void UPrjAttractionExplosionComponent::Detonate()
+{
+	UGameplayStatics::SpawnEmitterAtLocation(GetOwner(), Cast<ABuggyProjectile>(GetOwner())->AttractionExplosionParticleSystem, GetOwner()->GetActorLocation());
 
+	Super::Detonate();
+}

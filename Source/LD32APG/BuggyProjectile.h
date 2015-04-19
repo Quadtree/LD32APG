@@ -21,4 +21,9 @@ public:
 	UPROPERTY(VisibleAnywhere, Category = Projectile)
 	class UStaticMeshComponent* Mesh;
 	
+	UPROPERTY(EditAnywhere, Category = Pawn)
+	UParticleSystem* RepulsionExplosionParticleSystem;
+
+	UPROPERTY(EditAnywhere, Category = Pawn)
+	UParticleSystem* AttractionExplosionParticleSystem;
 };
