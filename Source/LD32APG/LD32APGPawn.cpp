@@ -15,6 +15,7 @@
 #include "BuggyGunComponent.h"
 #include "BuggyProjectile.h"
 #include "TeamStartZone.h"
+#include "VictoryPointComponent.h"
 
 #define JET_POWER 1500
 
@@ -88,6 +89,8 @@ void ALD32APGPawn::SetupPlayerInputComponent(class UInputComponent* InputCompone
 	InputComponent->BindAction("DetonateCommandFuzes", IE_Pressed, this, &ALD32APGPawn::DetonateCommandFuzes);
 
 	InputComponent->BindAction("RevertToStartArea", IE_Pressed, this, &ALD32APGPawn::RevertToStartArea);
+
+	InputComponent->BindAction("AttemptToGrabGold", IE_Pressed, this, &ALD32APGPawn::AttemptToGrabGold);
 }
 
 void ALD32APGPawn::MoveForward(float Val)
@@ -246,6 +249,63 @@ void ALD32APGPawn::DetonateCommandFuzes()
 void ALD32APGPawn::SetJetPower(float jetPower)
 {
 	JetPower = jetPower;
+}
+
+void ALD32APGPawn::AttemptToGrabGold()
+{
+	if (!GrabConstraint)
+	{
+		TArray<FOverlapResult> res;
+
+		if (GetWorld()->OverlapMulti(res, GetActorLocation(), FQuat::Identity, FCollisionShape::MakeSphere(2500), FCollisionQueryParams(), FCollisionObjectQueryParams::AllDynamicObjects))
+		{
+			float bestDistSqr = 1000000000000;
+			UPrimitiveComponent* bstTrg = nullptr;
+
+			for (auto r : res)
+			{
+				if (r.Actor.IsValid())
+				{
+					if (r.Actor == GetOwner()) continue;
+
+					if (!r.Actor->FindComponentByClass<UVictoryPointComponent>()) continue;
+
+					UPrimitiveComponent* prim = Cast<UPrimitiveComponent>(r.Component.Get());
+
+					float distSqr = FVector::DistSquared(GetActorLocation(), r.Actor->GetActorLocation());
+
+					if (prim && distSqr < bestDistSqr)
+					{
+						bestDistSqr = distSqr;
+						bstTrg = prim;
+					}
+				}
+			}
+
+			if (bstTrg)
+			{
+				GrabConstraint = NewObject<UPhysicsConstraintComponent>(GetWorld());
+
+				//GrabConstraint->SetConstrainedComponents(GetMesh(), NAME_None, bstTrg, NAME_None);
+				GrabConstraint->OverrideComponent1 = GetMesh();
+				GrabConstraint->OverrideComponent2 = bstTrg;
+
+				GrabConstraint->SetWorldLocation(GetActorLocation());
+				GrabConstraint->SetAngularTwistLimit(EAngularConstraintMotion::ACM_Free, 360);
+				GrabConstraint->SetAngularSwing1Limit(EAngularConstraintMotion::ACM_Free, 360);
+				GrabConstraint->SetAngularSwing2Limit(EAngularConstraintMotion::ACM_Free, 360);
+				
+				//GrabConstraint->RegisterComponent();
+
+				GrabConstraint->RegisterComponentWithWorld(GetWorld());
+			}
+		}
+	}
+	else
+	{
+		GrabConstraint->UnregisterComponent();
+		GrabConstraint = nullptr;
+	}
 }
 
 

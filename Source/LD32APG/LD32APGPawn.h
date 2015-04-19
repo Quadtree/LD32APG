@@ -78,6 +78,10 @@ public:
 	int32 Team;
 
 	void RevertToStartArea();
+
+	void AttemptToGrabGold();
+
+	class UPhysicsConstraintComponent* GrabConstraint;
 private:
 	/* Are we on a 'slippery' surface */
 	bool bIsLowFriction;
