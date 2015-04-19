@@ -284,26 +284,31 @@ void ALD32APGPawn::AttemptToGrabGold()
 
 			if (bstTrg)
 			{
-				GrabConstraint = NewObject<UPhysicsConstraintComponent>(GetWorld());
+				GrabConstraint = GetWorld()->SpawnActor<APhysicsConstraintActor>();
 
-				//GrabConstraint->SetConstrainedComponents(GetMesh(), NAME_None, bstTrg, NAME_None);
-				GrabConstraint->OverrideComponent1 = GetMesh();
-				GrabConstraint->OverrideComponent2 = bstTrg;
+				//
+				//GrabConstraint->GetConstraintComp()->OverrideComponent1 = GetMesh();
+				//GrabConstraint->GetConstraintComp()->OverrideComponent2 = bstTrg;
 
-				GrabConstraint->SetWorldLocation(GetActorLocation());
-				GrabConstraint->SetAngularTwistLimit(EAngularConstraintMotion::ACM_Free, 360);
-				GrabConstraint->SetAngularSwing1Limit(EAngularConstraintMotion::ACM_Free, 360);
-				GrabConstraint->SetAngularSwing2Limit(EAngularConstraintMotion::ACM_Free, 360);
+				GrabConstraint->GetConstraintComp()->SetAngularTwistLimit(EAngularConstraintMotion::ACM_Free, 360);
+				GrabConstraint->GetConstraintComp()->SetAngularSwing1Limit(EAngularConstraintMotion::ACM_Free, 360);
+				GrabConstraint->GetConstraintComp()->SetAngularSwing2Limit(EAngularConstraintMotion::ACM_Free, 360);
+				//GrabConstraint->GetConstraintComp()->SetLinearXLimit(ELinearConstraintMotion::LCM_Free, 0);
+				GrabConstraint->GetConstraintComp()->SetLinearYLimit(ELinearConstraintMotion::LCM_Free, 0);
+				GrabConstraint->GetConstraintComp()->SetLinearZLimit(ELinearConstraintMotion::LCM_Free, 0);
+
+				GrabConstraint->GetConstraintComp()->SetConstrainedComponents(GetMesh(), NAME_None, bstTrg, NAME_None);
 				
 				//GrabConstraint->RegisterComponent();
 
-				GrabConstraint->RegisterComponentWithWorld(GetWorld());
+				//GrabConstraint->RegisterComponentWithWorld(GetWorld());
 			}
 		}
 	}
 	else
 	{
-		GrabConstraint->UnregisterComponent();
+		//GrabConstraint->UnregisterComponent();
+		GrabConstraint->Destroy();
 		GrabConstraint = nullptr;
 	}
 }

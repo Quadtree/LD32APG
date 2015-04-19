@@ -81,7 +81,7 @@ public:
 
 	void AttemptToGrabGold();
 
-	class UPhysicsConstraintComponent* GrabConstraint;
+	class APhysicsConstraintActor* GrabConstraint;
 private:
 	/* Are we on a 'slippery' surface */
 	bool bIsLowFriction;
