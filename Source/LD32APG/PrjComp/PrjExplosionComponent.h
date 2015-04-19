@@ -12,8 +12,14 @@ UCLASS()
 class LD32APG_API UPrjExplosionComponent : public UBasePrjComponent
 {
 	GENERATED_BODY()
-	
-	
+
+public:
+
+	float Radius;
+
+	float Strength;
+
+	virtual void Detonate() override;
 	
 	
 };

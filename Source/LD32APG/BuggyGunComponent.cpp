@@ -22,16 +22,19 @@ void UBuggyGunComponent::Fire(class UWeaponConfiguration* weaponConfig)
 
 	prj->Mesh->SetEnableGravity(weaponConfig->ProjectileComponents.Contains(UPrjArcsPatternComponent::StaticClass()));
 
-	UE_LOG(LogTemp, Display, TEXT("Adding %s"), *FString::FromInt(weaponConfig->ProjectileComponents.Num()));
+	//UE_LOG(LogTemp, Display, TEXT("Adding %s"), *FString::FromInt(weaponConfig->ProjectileComponents.Num()));
 
 	if (weaponConfig->ProjectileComponents.Contains(UPrjBouncePatternComponent::StaticClass()))
 		prj->Mesh->SetPhysMaterialOverride(BouncyPhysicsMaterial);
 
 	for (auto a : weaponConfig->ProjectileComponents)
 	{
-		UE_LOG(LogTemp, Display, TEXT("Adding %s"), *a->GetName());
-		UBasePrjComponent* comp = NewObject<UBasePrjComponent>(prj, a);
-		comp->RegisterComponent();
+		//UE_LOG(LogTemp, Display, TEXT("Adding %s"), *a->GetName());
+		if (a)
+		{
+			UBasePrjComponent* comp = NewObject<UBasePrjComponent>(prj, a);
+			comp->RegisterComponent();
+		}
 	}
 }
 
