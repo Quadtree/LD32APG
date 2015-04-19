@@ -11,8 +11,8 @@ float UWeaponConfiguration::GetCostModifierOf(EPrjComponentCategory category)
 
 		for (auto t : ProjectileComponents)
 		{
-			UE_LOG(LogTemp, Display, TEXT("CostMod %s"), *FString::SanitizeFloat(t->GetDefaultObject<UBasePrjComponent>()->CostModifier));
-			if (t->GetDefaultObject<UBasePrjComponent>()->Category == category) accum += t->GetDefaultObject<UBasePrjComponent>()->CostModifier;
+			//UE_LOG(LogTemp, Display, TEXT("CostMod %s"), *FString::SanitizeFloat(t->GetDefaultObject<UBasePrjComponent>()->CostModifier));
+			if (t && t->GetDefaultObject<UBasePrjComponent>() && t->GetDefaultObject<UBasePrjComponent>()->Category == category) accum += t->GetDefaultObject<UBasePrjComponent>()->CostModifier;
 		}
 
 		return accum;
