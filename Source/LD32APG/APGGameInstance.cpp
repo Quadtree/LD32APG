@@ -16,6 +16,7 @@ TArray<class UWeaponConfiguration*> UAPGGameInstance::GetAllWeaponConfigurations
 
 	if (sg)
 	{
+		UE_LOG(LogTemp, Display, TEXT("Opened weapon configuration file, %s configurations loaded"), *FString::FromInt(sg->WeaponConfigurations.Num()));
 		return sg->WeaponConfigurations;
 	}
 	else
@@ -38,9 +39,16 @@ void UAPGGameInstance::DeleteWeaponConfiguration(FString name)
 
 		for (auto wc : sg->WeaponConfigurations)
 		{
-			if (wc->ConfigurationName == name)
+			if (!wc)
 			{
-				break;
+				UE_LOG(LogTemp, Warning, TEXT("Incoming weapon config is null on delete"));
+			}
+			else
+			{
+				if (wc->ConfigurationName == name)
+				{
+					break;
+				}
 			}
 
 			index++;
@@ -68,8 +76,35 @@ void UAPGGameInstance::SaveWeaponConfiguration(class UWeaponConfiguration* confi
 	UWeaponConfigurationSaveGame* sg = NewObject<UWeaponConfigurationSaveGame>();
 
 	sg->WeaponConfigurations = GetAllWeaponConfigurations();
+	sg->WeaponConfigurations.Add(configuration);
 
 	UGameplayStatics::SaveGameToSlot(sg, TEXT("WeaponConfigurations"), 0);
+
+	UE_LOG(LogTemp, Display, TEXT("Weapon configuration %s saved"), *configuration->ConfigurationName);
 }
 
+UWeaponConfiguration* UAPGGameInstance::GetWeaponConfiguration(FString name)
+{
+	for (auto wc : GetAllWeaponConfigurations())
+	{
+		if (!wc)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Incoming weapon config is null"));
+		}
+		else
+		{
+			if (wc->ConfigurationName == name)
+			{
+				UE_LOG(LogTemp, Display, TEXT("Weapon configuration %s loaded"), *wc->ConfigurationName);
+				return wc;
+			}
+			else
+			{
+				UE_LOG(LogTemp, Display, TEXT("Not finding weapon configuration, %s != %s"), *wc->ConfigurationName, *name);
+			}
+		}
+	}
+
+	return nullptr;
+}
 

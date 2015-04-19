@@ -22,6 +22,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = WeaponConfigurations)
 	void SaveWeaponConfiguration(class UWeaponConfiguration* configuration);
 
+	UFUNCTION(BlueprintPure, Category = WeaponConfigurations)
+	class UWeaponConfiguration* GetWeaponConfiguration(FString name);
+
 	UPROPERTY(BlueprintReadWrite, Category = WeaponConfigurations)
 	class UWeaponConfiguration* CurrentWeaponConfiguration;
 };
