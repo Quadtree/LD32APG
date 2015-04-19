@@ -12,8 +12,14 @@ UCLASS()
 class LD32APG_API UPrjWeavingPatternComponent : public UBasePrjComponent
 {
 	GENERATED_BODY()
+
+	UPrjWeavingPatternComponent();
 	
+	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 	
-	
-	
+	float WavePos;
+
+	FVector OriginalRightVector;
+
+	bool RightVectorSet;
 };

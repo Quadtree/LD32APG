@@ -5,7 +5,7 @@
 
 UPrjArcsPatternComponent::UPrjArcsPatternComponent()
 {
-	CostModifier = 0.6f;
+	CostModifier = -.1f;
 	Category = EPrjComponentCategory::PCC_FlightPattern;
 }
 
