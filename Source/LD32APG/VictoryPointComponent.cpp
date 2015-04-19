@@ -31,6 +31,23 @@ void UVictoryPointComponent::TickComponent( float DeltaTime, ELevelTick TickType
 {
 	Super::TickComponent( DeltaTime, TickType, ThisTickFunction );
 
-	// ...
+	if (!InitialPositionSet)
+	{
+		InitialPosition = GetOwner()->GetActorLocation();
+		InitialPositionSet = true;
+	}
+
+	if (GetOwner()->GetActorLocation().Z < -3000)
+	{
+		GetOwner()->SetActorLocation(InitialPosition);
+
+		UPrimitiveComponent* rt = Cast<UPrimitiveComponent>(GetOwner()->GetRootComponent());
+
+		if (rt)
+		{
+			rt->SetPhysicsLinearVelocity(FVector::ZeroVector);
+			rt->SetPhysicsAngularVelocity(FVector::ZeroVector);
+		}
+	}
 }
 

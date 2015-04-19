@@ -22,4 +22,6 @@ class LD32APG_API ABuggyAIController : public AAIController
 	bool IsCurrentlyBeingTowed(AActor* actor);
 
 	float StuckTime;
+
+	virtual void Possess(APawn* InPawn) override;
 };

@@ -4,7 +4,7 @@
 #include "PrjRepulsionConstantComponent.h"
 
 #define RADIUS 3000
-#define STRENGTH 400000
+#define STRENGTH 400
 
 UPrjRepulsionConstantComponent::UPrjRepulsionConstantComponent()
 {
@@ -30,7 +30,7 @@ void UPrjRepulsionConstantComponent::TickComponent(float DeltaTime, ELevelTick T
 
 				if (prim)
 				{
-					prim->AddRadialImpulse(GetOwner()->GetActorLocation(), RADIUS, STRENGTH * DeltaTime, ERadialImpulseFalloff::RIF_Linear);
+					prim->AddRadialImpulse(GetOwner()->GetActorLocation(), RADIUS, STRENGTH * DeltaTime, ERadialImpulseFalloff::RIF_Linear, true);
 				}
 			}
 		}

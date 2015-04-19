@@ -29,4 +29,7 @@ public:
 
 	UFUNCTION(BlueprintPure, Category = WeaponConfiguration)
 	float GetTotalEnergyCost();
+
+	UFUNCTION(BlueprintCallable, Category = WeaponConfiguration)
+	void SetToRandom();
 };

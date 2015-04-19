@@ -5,6 +5,7 @@
 #include "TeamStartZone.h"
 #include "LD32APGPawn.h"
 #include "VictoryPointComponent.h"
+#include "WeaponConfiguration.h"
 
 void ABuggyAIController::Tick(float deltaTime)
 {
@@ -123,6 +124,30 @@ void ABuggyAIController::Tick(float deltaTime)
 		{
 			pawn->SetJetPower(1);
 		}
+
+		pawn->StopFiring();
+
+		for (TActorIterator<ALD32APGPawn> itr(GetWorld()); itr; ++itr)
+		{
+			if (itr->Team != pawn->Team && FVector::Dist(pawn->GetActorLocation(), itr->GetActorLocation()) < 2000)
+			{
+				pawn->StartFiring();
+				break;
+			}
+		}
+	}
+}
+
+void ABuggyAIController::Possess(APawn* InPawn)
+{
+	Super::Possess(InPawn);
+
+	ALD32APGPawn* pawn = Cast<ALD32APGPawn>(InPawn);
+
+	if (pawn)
+	{
+		pawn->WeaponConfiguration = NewObject<UWeaponConfiguration>();
+		pawn->WeaponConfiguration->SetToRandom();
 	}
 }
 
@@ -144,7 +169,7 @@ void ABuggyAIController::HeadTowards(FVector pos)
 	ALD32APGPawn* pawn = Cast<ALD32APGPawn>(GetPawn());
 
 	FVector facing = GetPawn()->GetActorRightVector();
-	FVector toTarget = (pos - GetPawn()->GetActorLocation()).SafeNormal();
+	FVector toTarget = (pos - GetPawn()->GetActorLocation()).GetSafeNormal();
 
 	float turn = FVector::DotProduct(toTarget, facing);
 
