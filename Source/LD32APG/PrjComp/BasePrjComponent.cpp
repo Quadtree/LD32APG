@@ -34,3 +34,8 @@ void UBasePrjComponent::TickComponent( float DeltaTime, ELevelTick TickType, FAc
 	// ...
 }
 
+void UBasePrjComponent::Detonate()
+{
+
+}
+

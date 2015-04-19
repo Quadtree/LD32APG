@@ -12,8 +12,12 @@ UCLASS()
 class LD32APG_API UPrjFuzeTimedComponent : public UBasePrjComponent
 {
 	GENERATED_BODY()
-	
-	
+public:
+	UPrjFuzeTimedComponent();
+
+	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+
+	float Duration;
 	
 	
 };

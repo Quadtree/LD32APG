@@ -3,6 +3,10 @@
 #include "LD32APG.h"
 #include "PrjBouncePatternComponent.h"
 
-
+UPrjBouncePatternComponent::UPrjBouncePatternComponent()
+{
+	CostModifier = 1.2f;
+	Category = EPrjComponentCategory::PCC_FlightPattern;
+}
 
 

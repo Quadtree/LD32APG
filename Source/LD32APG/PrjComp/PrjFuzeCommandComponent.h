@@ -12,8 +12,8 @@ UCLASS()
 class LD32APG_API UPrjFuzeCommandComponent : public UBasePrjComponent
 {
 	GENERATED_BODY()
-	
-	
+
+	UPrjFuzeCommandComponent();
 	
 	
 };

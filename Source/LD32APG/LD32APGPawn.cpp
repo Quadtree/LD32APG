@@ -13,6 +13,7 @@
 #include "Engine.h"
 #include "WeaponConfiguration.h"
 #include "BuggyGunComponent.h"
+#include "BuggyProjectile.h"
 
 #ifdef HMD_INTGERATION
 // Needed for VR Headset
@@ -78,6 +79,8 @@ void ALD32APGPawn::SetupPlayerInputComponent(class UInputComponent* InputCompone
 
 	InputComponent->BindAction("Fire", IE_Pressed, this, &ALD32APGPawn::StartFiring);
 	InputComponent->BindAction("Fire", IE_Released, this, &ALD32APGPawn::StopFiring);
+
+	InputComponent->BindAction("DetonateCommandFuzes", IE_Pressed, this, &ALD32APGPawn::DetonateCommandFuzes);
 }
 
 void ALD32APGPawn::MoveForward(float Val)
@@ -170,6 +173,25 @@ void ALD32APGPawn::StartFiring()
 void ALD32APGPawn::StopFiring()
 {
 	IsFiring = false;
+}
+
+void ALD32APGPawn::DetonateCommandFuzes()
+{
+	for (TActorIterator<AActor> itr(GetWorld()); itr; ++itr)
+	{
+		if (itr->GetInstigator() == this)
+		{
+			for (auto a : itr->GetComponentsByClass(UBasePrjComponent::StaticClass()))
+			{
+				UBasePrjComponent* comp = Cast<UBasePrjComponent>(a);
+
+				if (comp)
+				{
+					comp->Detonate();
+				}
+			}
+		}
+	}
 }
 
 

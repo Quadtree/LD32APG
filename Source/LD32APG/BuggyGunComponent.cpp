@@ -13,7 +13,10 @@ void UBuggyGunComponent::Fire(class UWeaponConfiguration* weaponConfig)
 	FVector pos = GetComponentLocation() + GetComponentRotation().RotateVector(FVector::ForwardVector) * 350;
 	FRotator rot = GetComponentRotation();
 
-	ABuggyProjectile* prj = GetOwner()->GetWorld()->SpawnActor<ABuggyProjectile>(ProjectileClass, pos, rot);
+	FActorSpawnParameters params;
+	params.Instigator = Cast<APawn>(GetOwner());
+
+	ABuggyProjectile* prj = GetOwner()->GetWorld()->SpawnActor<ABuggyProjectile>(ProjectileClass, pos, rot, params);
 
 	prj->Mesh->SetPhysicsLinearVelocity(GetComponentRotation().RotateVector(FVector::ForwardVector) * 12000);
 

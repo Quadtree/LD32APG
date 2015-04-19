@@ -12,8 +12,8 @@ UCLASS()
 class LD32APG_API UPrjBouncePatternComponent : public UBasePrjComponent
 {
 	GENERATED_BODY()
-	
-	
+
+	UPrjBouncePatternComponent();
 	
 	
 };

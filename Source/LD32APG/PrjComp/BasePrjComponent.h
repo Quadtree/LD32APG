@@ -31,6 +31,8 @@ public:
 	// Called every frame
 	virtual void TickComponent( float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction ) override;
 
+	virtual void Detonate();
+
 	UPROPERTY(EditAnywhere, Category = PrjComponent)
 	EPrjComponentCategory Category;
 	

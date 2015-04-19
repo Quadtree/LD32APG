@@ -12,8 +12,13 @@ UCLASS()
 class LD32APG_API UPrjFuzeContactComponent : public UBasePrjComponent
 {
 	GENERATED_BODY()
+
+	virtual void OnRegister() override;
 	
-	
-	
-	
+	virtual void OnUnregister() override;
+
+	UFUNCTION()
+	virtual void OnParentHit(class AActor* selfActor, class AActor* otherActor, FVector normalImpulse, const FHitResult& hit);
+
+	UPrjFuzeContactComponent();
 };

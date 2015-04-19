@@ -61,6 +61,9 @@ public:
 	UFUNCTION()
 	void StopFiring();
 
+	UFUNCTION()
+	void DetonateCommandFuzes();
+
 	bool IsFiring;
 
 	float FireCooldown;

@@ -2,18 +2,18 @@
 
 #pragma once
 
-#include "PrjComp/BasePrjComponent.h"
+#include "PrjComp/PrjFuzeTimedComponent.h"
 #include "PrjFuzeImmediateComponent.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class LD32APG_API UPrjFuzeImmediateComponent : public UBasePrjComponent
+class LD32APG_API UPrjFuzeImmediateComponent : public UPrjFuzeTimedComponent
 {
 	GENERATED_BODY()
-	
-	
+
+	UPrjFuzeImmediateComponent();
 	
 	
 };
