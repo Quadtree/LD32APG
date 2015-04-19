@@ -227,6 +227,7 @@ void ALD32APGPawn::RevertToStartArea()
 				GetMesh()->SetPhysicsLinearVelocity(FVector(0, 0, 0));
 				GetMesh()->SetPhysicsAngularVelocity(FVector(0, 0, 0));
 				CurrentEnergy = 0;
+				CurrentlyTowedGold = nullptr;
 			}
 		}
 	}
@@ -266,11 +267,13 @@ void ALD32APGPawn::SetJetPower(float jetPower)
 	JetPower = jetPower;
 }
 
-void ALD32APGPawn::AttemptToGrabGold()
+AActor* ALD32APGPawn::GetCurrentGrabTarget()
 {
 	if (!CurrentlyTowedGold)
 	{
 		TArray<FOverlapResult> res;
+
+		AActor* ret = nullptr;
 
 		if (GetWorld()->OverlapMulti(res, GetActorLocation(), FQuat::Identity, FCollisionShape::MakeSphere(1200), FCollisionQueryParams(), FCollisionObjectQueryParams::AllDynamicObjects))
 		{
@@ -291,42 +294,23 @@ void ALD32APGPawn::AttemptToGrabGold()
 					if (prim && distSqr < bestDistSqr)
 					{
 						bestDistSqr = distSqr;
-						CurrentlyTowedGold = r.Actor.Get();
+						ret = r.Actor.Get();
 					}
 				}
 			}
-
-			/*if (bstTrg)
-			{
-				GrabConstraint = GetWorld()->SpawnActor<APhysicsConstraintActor>();
-
-				//
-				//GrabConstraint->GetConstraintComp()->OverrideComponent1 = GetMesh();
-				//GrabConstraint->GetConstraintComp()->OverrideComponent2 = bstTrg;
-
-				GrabConstraint->GetConstraintComp()->SetAngularTwistLimit(EAngularConstraintMotion::ACM_Free, 360);
-				GrabConstraint->GetConstraintComp()->SetAngularSwing1Limit(EAngularConstraintMotion::ACM_Free, 360);
-				GrabConstraint->GetConstraintComp()->SetAngularSwing2Limit(EAngularConstraintMotion::ACM_Free, 360);
-				//GrabConstraint->GetConstraintComp()->SetLinearXLimit(ELinearConstraintMotion::LCM_Free, 0);
-				GrabConstraint->GetConstraintComp()->SetLinearYLimit(ELinearConstraintMotion::LCM_Free, 0);
-				GrabConstraint->GetConstraintComp()->SetLinearZLimit(ELinearConstraintMotion::LCM_Free, 0);
-
-				GrabConstraint->GetConstraintComp()->SetConstrainedComponents(GetMesh(), NAME_None, bstTrg, NAME_None);
-				
-				//GrabConstraint->RegisterComponent();
-
-				//GrabConstraint->RegisterComponentWithWorld(GetWorld());
-			}*/
 		}
+
+		return ret;
 	}
 	else
 	{
-		//GrabConstraint->UnregisterComponent();
-		//GrabConstraint->Destroy();
-		//GrabConstraint = nullptr;
-
-		CurrentlyTowedGold = nullptr;
+		return nullptr;
 	}
+}
+
+void ALD32APGPawn::AttemptToGrabGold()
+{
+	CurrentlyTowedGold = GetCurrentGrabTarget();
 }
 
 

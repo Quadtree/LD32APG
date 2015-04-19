@@ -81,6 +81,8 @@ public:
 
 	void AttemptToGrabGold();
 
+	AActor* GetCurrentGrabTarget();
+
 	class AActor* CurrentlyTowedGold;
 private:
 	/* Are we on a 'slippery' surface */

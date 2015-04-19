@@ -27,9 +27,11 @@ void ATeamStartZone::Tick( float DeltaTime )
 
 }
 
-int32 ATeamStartZone::GetVictoryPoints()
+TArray<AActor*> ATeamStartZone::GetGoldOnTarget()
 {
-	int32 vp = 0;
+	check(this);
+
+	TArray<AActor*> ret;
 
 	TArray<FOverlapResult> res;
 
@@ -39,21 +41,18 @@ int32 ATeamStartZone::GetVictoryPoints()
 
 	//UE_LOG(LogTemp, Display, TEXT("O=%s E=%s"), *origin.ToCompactString(), *extent.ToCompactString());
 
-	if (GetWorld()->OverlapMulti(res, GetActorLocation(), GetActorRotation().Quaternion(), FCollisionShape::MakeBox((extent) + FVector::UpVector * 10000), FCollisionQueryParams(), FCollisionObjectQueryParams::AllDynamicObjects))
+	if (GetWorld()->OverlapMulti(res, GetActorLocation(), GetActorRotation().Quaternion(), FCollisionShape::MakeBox((extent)+FVector::UpVector * 10000), FCollisionQueryParams(), FCollisionObjectQueryParams::AllDynamicObjects))
 	{
 		for (auto a : res)
 		{
-			if (a.Actor.IsValid() && a.Actor->FindComponentByClass<UVictoryPointComponent>()) vp++;
+			if (a.Actor.IsValid() && a.Actor->FindComponentByClass<UVictoryPointComponent>()) ret.Add(a.Actor.Get());
 		}
 	}
 
-	return vp;
+	return ret;
+}
 
-	/*for (TActorIterator<AActor> itr(GetWorld()); itr; ++itr)
-	{
-		if (itr->FindComponentByClass<UVictoryPointComponent>())
-		{
-			itr->FindComponentByClass<UVictoryPointComponent>()
-		}
-	}*/
+int32 ATeamStartZone::GetVictoryPoints()
+{
+	return GetGoldOnTarget().Num();
 }
