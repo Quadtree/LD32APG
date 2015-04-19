@@ -69,6 +69,8 @@ ALD32APGPawn::ALD32APGPawn(const FObjectInitializer& ObjectInitializer)
 	Camera->AttachTo(SpringArm, USpringArmComponent::SocketName);
 	Camera->bUsePawnControlRotation = false;
 	Camera->FieldOfView = 90.f;
+
+	GrabBeamParticleSystem = ObjectInitializer.CreateDefaultSubobject<UParticleSystemComponent>(this, TEXT("GrabBeam"));
 }
 
 void ALD32APGPawn::SetupPlayerInputComponent(class UInputComponent* InputComponent)
@@ -186,6 +188,15 @@ void ALD32APGPawn::Tick(float Delta)
 		}
 
 		if (!CurrentlyTowedGold->IsValidLowLevel()) CurrentlyTowedGold = nullptr;
+
+		GrabBeamParticleSystem->SetVisibility(true);
+
+		GrabBeamParticleSystem->SetVectorParameter("Source", GetActorLocation());
+		GrabBeamParticleSystem->SetVectorParameter("Target", CurrentlyTowedGold->GetActorLocation());
+	}
+	else
+	{
+		GrabBeamParticleSystem->SetVisibility(false);
 	}
 }
 

@@ -20,6 +20,9 @@ class ALD32APGPawn : public AWheeledVehicle
 	UPROPERTY(Category = Camera, VisibleDefaultsOnly, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	UCameraComponent* Camera;
 
+	UPROPERTY(VisibleAnywhere, Category = Pawn)
+	UParticleSystemComponent* GrabBeamParticleSystem;
+
 public:
 	ALD32APGPawn(const FObjectInitializer& ObjectInitializer);
 
