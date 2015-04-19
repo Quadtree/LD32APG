@@ -124,6 +124,16 @@ void ALD32APGPawn::Tick(float Delta)
 
 				UE_LOG(LogTemp, Display, TEXT("FIRE! %s"), *FString::SanitizeFloat(energyUsage));
 
+				for (auto a : GetComponentsByClass(UBuggyGunComponent::StaticClass()))
+				{
+					UBuggyGunComponent* gc = Cast<UBuggyGunComponent>(a);
+
+					if (gc && WeaponConfiguration->EnabledFireGroups.Contains(gc->FireGroup))
+					{
+						gc->Fire(WeaponConfiguration);
+					}
+				}
+
 				FireCooldown = 0.35f;
 			}
 		}
@@ -159,7 +169,7 @@ void ALD32APGPawn::StartFiring()
 
 void ALD32APGPawn::StopFiring()
 {
-	IsFiring = true;
+	IsFiring = false;
 }
 
 

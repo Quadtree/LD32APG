@@ -15,6 +15,9 @@ class LD32APG_API UBuggyGunComponent : public UStaticMeshComponent
 public:
 	UPROPERTY(EditAnywhere, Category = Gun)
 	int32 FireGroup;
+
+	UPROPERTY(EditAnywhere, Category = Gun)
+	TSubclassOf<class ABuggyProjectile> ProjectileClass;
 	
-	
+	void Fire(class UWeaponConfiguration* weaponConfig);
 };
