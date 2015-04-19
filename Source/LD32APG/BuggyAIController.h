@@ -18,4 +18,8 @@ class LD32APG_API ABuggyAIController : public AAIController
 	AActor* CurrentGoldTarget;
 
 	void HeadTowards(FVector pos);
+
+	bool IsCurrentlyBeingTowed(AActor* actor);
+
+	float StuckTime;
 };

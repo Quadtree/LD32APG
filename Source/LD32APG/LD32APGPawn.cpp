@@ -184,6 +184,8 @@ void ALD32APGPawn::Tick(float Delta)
 
 			GetMesh()->AddImpulse(-delta);
 		}
+
+		if (!CurrentlyTowedGold->IsValidLowLevel()) CurrentlyTowedGold = nullptr;
 	}
 }
 

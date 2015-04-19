@@ -14,6 +14,17 @@ void ABuggyAIController::Tick(float deltaTime)
 
 	if (pawn)
 	{
+		if (StuckTime > 8)
+		{
+			pawn->SetJetPower(0);
+			pawn->MoveRight(0);
+			pawn->MoveForward(0);
+
+			pawn->RevertToStartArea();
+
+			return;
+		}
+
 		ATeamStartZone* myTeamStartZone = nullptr;
 
 		int32 myTeam = pawn->Team;
@@ -27,6 +38,9 @@ void ABuggyAIController::Tick(float deltaTime)
 		}
 
 		TArray<AActor*> goldOnTarget;
+
+		// make sure the gold hasn't been destroyed
+		if (CurrentGoldTarget && CurrentGoldTarget->IsPendingKill()) CurrentGoldTarget = nullptr;
 
 		// determine what gold is already on our team target
 		if (myTeamStartZone)
@@ -56,15 +70,22 @@ void ABuggyAIController::Tick(float deltaTime)
 
 		if (pawn->CurrentlyTowedGold)
 		{
+			UE_LOG(LogTemp, Display, TEXT("Approaching homebase, towing %s"), *pawn->CurrentlyTowedGold->GetName());
 			HeadTowards(myTeamStartZone->GetActorLocation());
 		}
 		else
 		{
 			if (CurrentGoldTarget)
 			{
+				UE_LOG(LogTemp, Display, TEXT("Approaching %s"), *CurrentGoldTarget->GetName());
 				HeadTowards(CurrentGoldTarget->GetActorLocation());
 
-				if (pawn->GetCurrentGrabTarget() == CurrentGoldTarget)
+				if (IsCurrentlyBeingTowed(CurrentGoldTarget))
+				{
+					CurrentGoldTarget = nullptr;
+				}
+
+				if (CurrentGoldTarget && pawn->GetCurrentGrabTarget() == CurrentGoldTarget)
 				{
 					pawn->AttemptToGrabGold();
 				}
@@ -72,25 +93,54 @@ void ABuggyAIController::Tick(float deltaTime)
 			else
 			{
 				UE_LOG(LogTemp, Display, TEXT("Scanning for new gold"));
+
+				int32 n = 0;
+
 				// we need a gold target but we don't have one. so scan for some gold
 				for (TActorIterator<AActor> itr(GetWorld()); itr; ++itr)
 				{
-					if (!goldOnTarget.Contains(*itr) && itr->FindComponentByClass<UVictoryPointComponent>())
+					if (!goldOnTarget.Contains(*itr) && itr->FindComponentByClass<UVictoryPointComponent>() && !IsCurrentlyBeingTowed(*itr) && FMath::Rand() % ++n == 0)
 					{
 						// this gold isn't already in our base, so pick it as the target
 						CurrentGoldTarget = *itr;
-						break;
 					}
 				}
 			}
 		}
+
+		if (pawn->GetVelocity().Size() > 400)
+		{
+			//UE_LOG(LogTemp, Display, TEXT("NOT STUCK %s"), *FString::SanitizeFloat(pawn->GetVelocity().Size()));
+			StuckTime = 0;
+		}
+		else
+		{
+			//UE_LOG(LogTemp, Display, TEXT("STUCK %s"), *FString::SanitizeFloat(StuckTime));
+			StuckTime += deltaTime;
+		}
+
+		if (StuckTime > 4)
+		{
+			pawn->SetJetPower(1);
+		}
 	}
+}
+
+bool ABuggyAIController::IsCurrentlyBeingTowed(AActor* actor)
+{
+	for (TActorIterator<ALD32APGPawn> itr(GetWorld()); itr; ++itr)
+	{
+		if (itr->CurrentlyTowedGold == actor)
+		{
+			return true;
+		}
+	}
+
+	return false;
 }
 
 void ABuggyAIController::HeadTowards(FVector pos)
 {
-	UE_LOG(LogTemp, Display, TEXT("Approaching %s"), *pos.ToCompactString());
-
 	ALD32APGPawn* pawn = Cast<ALD32APGPawn>(GetPawn());
 
 	FVector facing = GetPawn()->GetActorRightVector();

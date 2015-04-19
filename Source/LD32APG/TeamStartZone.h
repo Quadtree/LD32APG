@@ -28,4 +28,6 @@ public:
 
 	UFUNCTION(BlueprintPure, Category = Win)
 	TArray<AActor*> GetGoldOnTarget();
+
+	int32 VictoryPoints;
 };

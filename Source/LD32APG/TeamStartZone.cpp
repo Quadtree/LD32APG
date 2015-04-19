@@ -25,6 +25,11 @@ void ATeamStartZone::Tick( float DeltaTime )
 {
 	Super::Tick( DeltaTime );
 
+	for (auto a : GetGoldOnTarget())
+	{
+		a->Destroy();
+		++VictoryPoints;
+	}
 }
 
 TArray<AActor*> ATeamStartZone::GetGoldOnTarget()
@@ -54,5 +59,5 @@ TArray<AActor*> ATeamStartZone::GetGoldOnTarget()
 
 int32 ATeamStartZone::GetVictoryPoints()
 {
-	return GetGoldOnTarget().Num();
+	return VictoryPoints;
 }
