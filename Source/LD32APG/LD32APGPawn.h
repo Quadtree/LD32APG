@@ -81,7 +81,7 @@ public:
 
 	void AttemptToGrabGold();
 
-	class APhysicsConstraintActor* GrabConstraint;
+	class AActor* CurrentlyTowedGold;
 private:
 	/* Are we on a 'slippery' surface */
 	bool bIsLowFriction;

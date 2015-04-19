@@ -170,6 +170,21 @@ void ALD32APGPawn::Tick(float Delta)
 	if (GetActorLocation().Z < -1000){
 		CurrentEnergy = MaxEnergy; RevertToStartArea();
 	}
+
+	if (CurrentlyTowedGold)
+	{
+		if (FVector::Dist(CurrentlyTowedGold->GetActorLocation(), GetActorLocation()) > 1000)
+		{
+			FVector delta = GetActorLocation() - CurrentlyTowedGold->GetActorLocation();
+			delta.Normalize();
+
+			delta *= 3000 * Delta * Cast<UPrimitiveComponent>(CurrentlyTowedGold->GetRootComponent())->GetMass();
+
+			Cast<UPrimitiveComponent>(CurrentlyTowedGold->GetRootComponent())->AddImpulse(delta);
+
+			GetMesh()->AddImpulse(-delta);
+		}
+	}
 }
 
 void ALD32APGPawn::BeginPlay()
@@ -253,14 +268,13 @@ void ALD32APGPawn::SetJetPower(float jetPower)
 
 void ALD32APGPawn::AttemptToGrabGold()
 {
-	if (!GrabConstraint)
+	if (!CurrentlyTowedGold)
 	{
 		TArray<FOverlapResult> res;
 
-		if (GetWorld()->OverlapMulti(res, GetActorLocation(), FQuat::Identity, FCollisionShape::MakeSphere(2500), FCollisionQueryParams(), FCollisionObjectQueryParams::AllDynamicObjects))
+		if (GetWorld()->OverlapMulti(res, GetActorLocation(), FQuat::Identity, FCollisionShape::MakeSphere(1200), FCollisionQueryParams(), FCollisionObjectQueryParams::AllDynamicObjects))
 		{
 			float bestDistSqr = 1000000000000;
-			UPrimitiveComponent* bstTrg = nullptr;
 
 			for (auto r : res)
 			{
@@ -277,12 +291,12 @@ void ALD32APGPawn::AttemptToGrabGold()
 					if (prim && distSqr < bestDistSqr)
 					{
 						bestDistSqr = distSqr;
-						bstTrg = prim;
+						CurrentlyTowedGold = r.Actor.Get();
 					}
 				}
 			}
 
-			if (bstTrg)
+			/*if (bstTrg)
 			{
 				GrabConstraint = GetWorld()->SpawnActor<APhysicsConstraintActor>();
 
@@ -302,14 +316,16 @@ void ALD32APGPawn::AttemptToGrabGold()
 				//GrabConstraint->RegisterComponent();
 
 				//GrabConstraint->RegisterComponentWithWorld(GetWorld());
-			}
+			}*/
 		}
 	}
 	else
 	{
 		//GrabConstraint->UnregisterComponent();
-		GrabConstraint->Destroy();
-		GrabConstraint = nullptr;
+		//GrabConstraint->Destroy();
+		//GrabConstraint = nullptr;
+
+		CurrentlyTowedGold = nullptr;
 	}
 }
 
