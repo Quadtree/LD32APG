@@ -18,6 +18,9 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = Gun)
 	TSubclassOf<class ABuggyProjectile> ProjectileClass;
+
+	UPROPERTY(EditAnywhere, Category = Gun)
+	UPhysicalMaterial* BouncyPhysicsMaterial;
 	
 	void Fire(class UWeaponConfiguration* weaponConfig);
 };
