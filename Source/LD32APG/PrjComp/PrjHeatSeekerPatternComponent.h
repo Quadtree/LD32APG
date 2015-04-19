@@ -12,8 +12,8 @@ UCLASS()
 class LD32APG_API UPrjHeatSeekerPatternComponent : public UBasePrjComponent
 {
 	GENERATED_BODY()
+
+	UPrjHeatSeekerPatternComponent();
 	
-	
-	
-	
+	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 };
