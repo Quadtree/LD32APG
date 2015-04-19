@@ -12,6 +12,7 @@
 #include "Engine/SkeletalMesh.h"
 #include "Engine.h"
 #include "WeaponConfiguration.h"
+#include "BuggyGunComponent.h"
 
 #ifdef HMD_INTGERATION
 // Needed for VR Headset
@@ -136,6 +137,19 @@ void ALD32APGPawn::Tick(float Delta)
 void ALD32APGPawn::BeginPlay()
 {
 	Super::BeginPlay();
+
+	if (WeaponConfiguration)
+	{
+		for (auto a : GetComponentsByClass(UBuggyGunComponent::StaticClass()))
+		{
+			UBuggyGunComponent* gc = Cast<UBuggyGunComponent>(a);
+
+			if (gc)
+			{
+				gc->SetVisibility(WeaponConfiguration->EnabledFireGroups.Contains(gc->FireGroup));
+			}
+		}
+	}
 }
 
 void ALD32APGPawn::StartFiring()
