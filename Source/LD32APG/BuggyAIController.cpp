@@ -90,4 +90,26 @@ void ABuggyAIController::Tick(float deltaTime)
 void ABuggyAIController::HeadTowards(FVector pos)
 {
 	UE_LOG(LogTemp, Display, TEXT("Approaching %s"), *pos.ToCompactString());
+
+	ALD32APGPawn* pawn = Cast<ALD32APGPawn>(GetPawn());
+
+	FVector facing = GetPawn()->GetActorRightVector();
+	FVector toTarget = (pos - GetPawn()->GetActorLocation()).SafeNormal();
+
+	float turn = FVector::DotProduct(toTarget, facing);
+
+	if (turn < -0.2f)
+	{
+		pawn->MoveRight(-1);
+		pawn->MoveForward(.7f);
+	}
+	else if (turn > .2f)
+	{
+		pawn->MoveRight(1);
+		pawn->MoveForward(.7f);
+	}
+	else
+	{
+		pawn->MoveForward(1);
+	}
 }
