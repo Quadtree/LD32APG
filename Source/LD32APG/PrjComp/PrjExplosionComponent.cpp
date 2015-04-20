@@ -21,7 +21,7 @@ void UPrjExplosionComponent::Detonate()
 
 				if (prim)
 				{
-					prim->AddRadialImpulse(GetOwner()->GetActorLocation() + FVector::UpVector * (1000 * (Strength > 0 ? 1 : -1)), Radius, Strength, ERadialImpulseFalloff::RIF_Linear, true);
+					prim->AddRadialImpulse(GetOwner()->GetActorLocation() + FVector::UpVector * (1000 * (Strength > 0 ? 1 : -1)), Radius, Strength * FMath::FRandRange(0.6f, 1.4f), ERadialImpulseFalloff::RIF_Linear, true);
 				}
 			}
 		}

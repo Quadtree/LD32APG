@@ -5,7 +5,7 @@
 
 UPrjKineticWarheadComponent::UPrjKineticWarheadComponent()
 {
-	CostModifier = .6f;
+	CostModifier = 3.f;
 	Category = EPrjComponentCategory::PCC_Warhead;
 }
 

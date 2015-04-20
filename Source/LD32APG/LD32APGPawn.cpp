@@ -172,11 +172,11 @@ void ALD32APGPawn::Tick(float Delta)
 		}
 	}
 
-	if (GetActorLocation().Z < -1000){
+	if (GetActorLocation().Z < -1000 || GetActorLocation().Size() > 20000){
 		CurrentEnergy = MaxEnergy; RevertToStartArea();
 	}
 
-	if (CurrentlyTowedGold)
+	if (CurrentlyTowedGold && !CurrentlyTowedGold->IsPendingKill() && CurrentlyTowedGold->IsValidLowLevel())
 	{
 		if (FVector::Dist(CurrentlyTowedGold->GetActorLocation(), GetActorLocation()) > 1000)
 		{
@@ -190,8 +190,6 @@ void ALD32APGPawn::Tick(float Delta)
 			GetMesh()->AddImpulse(-delta);
 		}
 
-		if (!CurrentlyTowedGold->IsValidLowLevel()) CurrentlyTowedGold = nullptr;
-
 		GrabBeamParticleSystem->SetVisibility(true);
 
 		GrabBeamParticleSystem->SetVectorParameter("Source", GetActorLocation());
@@ -199,6 +197,7 @@ void ALD32APGPawn::Tick(float Delta)
 	}
 	else
 	{
+		CurrentlyTowedGold = nullptr;
 		GrabBeamParticleSystem->SetVisibility(false);
 	}
 }

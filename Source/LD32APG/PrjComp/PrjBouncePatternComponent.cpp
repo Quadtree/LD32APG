@@ -5,7 +5,7 @@
 
 UPrjBouncePatternComponent::UPrjBouncePatternComponent()
 {
-	CostModifier = 1.2f;
+	CostModifier = .5f;
 	Category = EPrjComponentCategory::PCC_FlightPattern;
 }
 

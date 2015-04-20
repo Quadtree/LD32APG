@@ -8,7 +8,7 @@
 
 UPrjHeatSeekerPatternComponent::UPrjHeatSeekerPatternComponent()
 {
-	CostModifier = 3.5f;
+	CostModifier = 4.5f;
 	Category = EPrjComponentCategory::PCC_FlightPattern;
 }
 

@@ -9,7 +9,7 @@ UPrjRepulsionExplosionComponent::UPrjRepulsionExplosionComponent()
 	CostModifier = 2;
 	Category = EPrjComponentCategory::PCC_Warhead;
 	Radius = 5000;
-	Strength = 1500;
+	Strength = 2000;
 }
 
 void UPrjRepulsionExplosionComponent::Detonate()

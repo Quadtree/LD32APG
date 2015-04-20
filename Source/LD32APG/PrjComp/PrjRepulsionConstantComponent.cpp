@@ -4,7 +4,7 @@
 #include "PrjRepulsionConstantComponent.h"
 
 #define RADIUS 3000
-#define STRENGTH 400
+#define STRENGTH 900
 
 UPrjRepulsionConstantComponent::UPrjRepulsionConstantComponent()
 {

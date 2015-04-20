@@ -4,7 +4,7 @@
 #include "PrjAttractionConstantComponent.h"
 
 #define RADIUS 4000
-#define STRENGTH 500
+#define STRENGTH 75
 
 UPrjAttractionConstantComponent::UPrjAttractionConstantComponent()
 {

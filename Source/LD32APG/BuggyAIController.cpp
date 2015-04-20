@@ -71,14 +71,14 @@ void ABuggyAIController::Tick(float deltaTime)
 
 		if (pawn->CurrentlyTowedGold)
 		{
-			UE_LOG(LogTemp, Display, TEXT("Approaching homebase, towing %s"), *pawn->CurrentlyTowedGold->GetName());
+			//UE_LOG(LogTemp, Display, TEXT("Approaching homebase, towing %s"), *pawn->CurrentlyTowedGold->GetName());
 			HeadTowards(myTeamStartZone->GetActorLocation());
 		}
 		else
 		{
 			if (CurrentGoldTarget)
 			{
-				UE_LOG(LogTemp, Display, TEXT("Approaching %s"), *CurrentGoldTarget->GetName());
+				//UE_LOG(LogTemp, Display, TEXT("Approaching %s"), *CurrentGoldTarget->GetName());
 				HeadTowards(CurrentGoldTarget->GetActorLocation());
 
 				if (IsCurrentlyBeingTowed(CurrentGoldTarget))
@@ -93,7 +93,7 @@ void ABuggyAIController::Tick(float deltaTime)
 			}
 			else
 			{
-				UE_LOG(LogTemp, Display, TEXT("Scanning for new gold"));
+				//UE_LOG(LogTemp, Display, TEXT("Scanning for new gold"));
 
 				int32 n = 0;
 
