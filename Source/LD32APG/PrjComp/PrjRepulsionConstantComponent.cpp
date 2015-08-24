@@ -3,8 +3,8 @@
 #include "LD32APG.h"
 #include "PrjRepulsionConstantComponent.h"
 
-#define RADIUS 3000
-#define STRENGTH 900
+const int32 UPrjRepulsionConstantComponent::RADIUS = 3000;
+const int32 UPrjRepulsionConstantComponent::STRENGTH = 900;
 
 UPrjRepulsionConstantComponent::UPrjRepulsionConstantComponent()
 {

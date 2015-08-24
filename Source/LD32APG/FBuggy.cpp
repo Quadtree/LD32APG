@@ -147,7 +147,7 @@ void AFBuggy::Tick( float DeltaTime )
 				//UE_LOG(LogTemp, Display, TEXT("ARGH) %s %s"), *c->GetRelativeTransform().Rotator().ToCompactString(), *Cast<USceneComponent>(bodyComponent)->GetRelativeTransform().Rotator().ToCompactString());
 
 				//UE_LOG(LogTemp, Display, TEXT("ROT %s"), *c->GetPhysicsAngularVelocity().ToCompactString());
-
+				*/
 				/*FRotator rot = c->GetRelativeTransform().Rotator();
 
 				FRotator oldRot = rot;

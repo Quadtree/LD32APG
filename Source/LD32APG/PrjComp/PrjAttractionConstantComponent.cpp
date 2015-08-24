@@ -3,8 +3,8 @@
 #include "LD32APG.h"
 #include "PrjAttractionConstantComponent.h"
 
-#define RADIUS 4000
-#define STRENGTH 75
+const int32 UPrjAttractionConstantComponent::RADIUS = 4000;
+const int32 UPrjAttractionConstantComponent::STRENGTH = 75;
 
 UPrjAttractionConstantComponent::UPrjAttractionConstantComponent()
 {
